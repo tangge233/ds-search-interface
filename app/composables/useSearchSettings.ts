@@ -2,7 +2,7 @@ import type { SearchSortKey } from '~/types/search'
 import { DEFAULT_BASE_URL } from '~/utils/endpoint'
 import type { AppLocale } from '~/utils/locales'
 import { APP_LOCALES, DEFAULT_LOCALE, detectLocale } from '~/utils/locales'
-import type { ResultsLayout } from '~/utils/search-presets'
+import type { LocalizationMode, ResultsLayout } from '~/utils/search-presets'
 
 /** 持久化的搜索偏好（API Key 单独存放，便于一键清除）。 */
 export interface SearchPrefs {
@@ -14,6 +14,8 @@ export interface SearchPrefs {
   resultsLayout: ResultsLayout
   /** 关掉后不再写入本机搜索记录。 */
   keepHistory: boolean
+  /** 本地化 IP 的来源：自动获取或手动填写。 */
+  localizationMode: LocalizationMode
   /** 界面语言；i18n 的当前语言跟随它，而不是反过来。 */
   locale: AppLocale
 }
@@ -27,13 +29,14 @@ const KEYS = {
 /** 单次查询相关的偏好：工具栏上的「恢复默认」只重置这一组。 */
 const QUERY_PREF_DEFAULTS: Pick<
   SearchPrefs,
-  'count' | 'needContent' | 'onlyQuality' | 'sort' | 'localization'
+  'count' | 'needContent' | 'onlyQuality' | 'sort' | 'localization' | 'localizationMode'
 > = {
   count: 10,
   needContent: false,
   onlyQuality: false,
   sort: 'relevance',
-  localization: ''
+  localization: '',
+  localizationMode: 'custom'
 }
 
 const PREF_DEFAULTS: SearchPrefs = {
@@ -65,6 +68,10 @@ function hydrate() {
   // 没存过语言（新用户或旧版本）才按浏览器判断；存过但 code 未知时退回默认。
   if (!stored.locale) prefs.locale = detectLocale()
   else if (!APP_LOCALES.some(item => item.code === stored.locale)) prefs.locale = DEFAULT_LOCALE
+  // 旧版本没有来源字段，或值无法识别时按「自定义」处理，与升级前的行为一致。
+  if (prefs.localizationMode !== 'auto' && prefs.localizationMode !== 'custom') {
+    prefs.localizationMode = 'custom'
+  }
 
   watch(apiKey, value => writeString(KEYS.apiKey, value))
   // 地址保持默认时不落盘，避免 localStorage 里留下「看起来配过」的痕迹。

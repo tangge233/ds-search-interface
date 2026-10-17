@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t, locale, loadLocaleMessages } = useI18n()
 const { prefs } = useSearchSettings()
+const { syncAutoIp } = useLocalizationIp()
 
 // 语言只有一份来源：本机偏好。i18n 的 locale 跟着它走，
 // 于是设置里的切换、刷新后的还原、以及 <html lang> 都不会各说各话。
@@ -16,6 +17,11 @@ watch(() => prefs.locale, async (value) => {
   }
   locale.value = value
 }, { immediate: true })
+
+// 自动获取模式下每次启动刷新一次本机 IP；自定义模式不产生任何第三方请求。
+onMounted(() => {
+  void syncAutoIp()
+})
 
 useHead({
   title: () => t('meta.title'),

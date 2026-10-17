@@ -14,7 +14,8 @@ const open = defineModel<boolean>('open', { required: true })
 const { t } = useI18n()
 const { apiKey, baseUrl, prefs, saveBaseUrl, clearApiKey, hasApiKey, resetPrefs } = useSearchSettings()
 const { clearAll: clearHistory } = useSearchHistory()
-const { countItems, sortItems, layoutItems } = usePresetItems()
+const { countItems, sortItems, layoutItems, localizationModeItems } = usePresetItems()
+const { detecting, failed, setMode } = useLocalizationIp()
 const toast = useToast()
 
 /** 分区只存 labelKey，切语言时导航跟着变。 */
@@ -92,6 +93,11 @@ async function verify() {
   } finally {
     verifying.value = false
   }
+}
+
+/** URadioGroup 的值类型是联合类型，收窄后交给 setMode，避免在模板里断言。 */
+function onModeChange(value: unknown) {
+  if (value === 'auto' || value === 'custom') void setMode(value)
 }
 
 function forgetKey() {
@@ -234,10 +240,35 @@ function onHistoryToggle(enabled: boolean) {
               <UFormField
                 :label="t('settings.localizationLabel')"
                 :hint="t('advanced.optional')"
-                :help="t('settings.localizationHelp')"
                 class="sm:col-span-2"
               >
-                <UInput v-model="prefs.localization" :placeholder="t('advanced.localizationPlaceholder')" class="w-full" />
+                <!-- 两种来源写同一个配置字段：切换模式不会各存一份 IP。 -->
+                <div class="space-y-2.5">
+                  <URadioGroup
+                    :model-value="prefs.localizationMode"
+                    :items="localizationModeItems"
+                    orientation="horizontal"
+                    @update:model-value="onModeChange"
+                  />
+
+                  <template v-if="prefs.localizationMode === 'custom'">
+                    <UInput
+                      v-model="prefs.localization"
+                      :placeholder="t('advanced.localizationPlaceholder')"
+                      class="w-full"
+                    />
+                    <p class="text-xs text-dimmed">{{ t('localization.customHelp') }}</p>
+                  </template>
+
+                  <template v-else>
+                    <p v-if="prefs.localization" class="font-mono text-sm text-toned">{{ prefs.localization }}</p>
+                    <p v-if="detecting" class="text-xs text-dimmed">{{ t('localization.autoDetecting') }}</p>
+                    <p v-else-if="failed" class="text-xs text-error">
+                      {{ prefs.localization ? t('localization.autoFailedKeep') : t('localization.autoFailedNone') }}
+                    </p>
+                    <p v-else class="text-xs text-dimmed">{{ t('localization.autoHelp') }}</p>
+                  </template>
+                </div>
               </UFormField>
             </div>
 

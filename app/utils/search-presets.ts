@@ -22,6 +22,14 @@ export const SORT_OPTIONS: PresetOption<SearchSortKey>[] = [
   { value: 'date', labelKey: 'preset.sort.date' }
 ]
 
+/** 本地化 IP 的来源：自动获取当前公网 IP，或自己填写。 */
+export type LocalizationMode = 'auto' | 'custom'
+
+export const LOCALIZATION_MODE_OPTIONS: PresetOption<LocalizationMode>[] = [
+  { value: 'auto', labelKey: 'localization.modeAuto' },
+  { value: 'custom', labelKey: 'localization.modeCustom' }
+]
+
 export const LAYOUT_OPTIONS: PresetOption<ResultsLayout>[] = [
   { value: 'center', labelKey: 'preset.layout.center' },
   { value: 'left', labelKey: 'preset.layout.left' },

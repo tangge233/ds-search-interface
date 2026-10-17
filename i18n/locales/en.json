@@ -94,7 +94,6 @@
     "oriQuestionHelp": "Up to 128 characters; helps the server understand your intent",
     "oriQuestionPlaceholder": "e.g. how do I deploy vLLM in production?",
     "localization": "Localization IP",
-    "localizationHelp": "Bias results toward this region; leave empty to skip.",
     "localizationPlaceholder": "203.0.113.10"
   },
   "results": {
@@ -185,7 +184,6 @@
     "sortLabel": "Sort order",
     "sortHelp": "Sorted locally at no extra cost; “Relevance” keeps the API order",
     "localizationLabel": "Localization IP",
-    "localizationHelp": "Bias results toward this region; leave empty to skip.",
     "needContentLabel": "Return page content",
     "needContentDescription": "Returns the full page, which you can expand and read inline.",
     "onlyQualityLabel": "Quality results only",
@@ -209,7 +207,7 @@
     "rateText": "5 QPS per account; when you hit the limit the page asks you to retry shortly.",
     "rateLink": "official API guide",
     "dataTitle": "Where data goes",
-    "dataText": "No backend of our own: apart from sending your API key and query to the endpoint you configured, nothing is sent to or stored on any other server.",
+    "dataText": "No backend of our own: apart from sending your API key and query to the endpoint you configured, nothing is sent to or stored on any other server. The “Automatic” option makes a separate request to myip.ipip.net that carries neither your key nor your query.",
     "dutyTitle": "Your responsibility",
     "dutyText": "You are responsible for safeguarding your API key, for account charges and for how you use the results. Follow the DeepSeek terms of service and judge for yourself whether results fit your scenario.",
     "storageTitle": "Local storage",
@@ -292,5 +290,14 @@
     "missingKeyTitle": "No API key configured",
     "missingKeyDetail": "The Search API uses Bearer auth, so it needs your own DeepSeek API key.",
     "missingKeyHint": "Add the key and search; it stays in this browser."
+  },
+  "localization": {
+    "modeAuto": "Automatic",
+    "modeCustom": "Custom",
+    "customHelp": "Bias results toward this region; leave empty to skip it.",
+    "autoHelp": "Your public IP is detected at startup.",
+    "autoDetecting": "Detecting your public IP…",
+    "autoFailedKeep": "Could not detect the IP; keeping the previous one.",
+    "autoFailedNone": "Could not detect the IP; searches will not include a region hint."
   }
 }

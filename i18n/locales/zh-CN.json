@@ -94,7 +94,6 @@
     "oriQuestionHelp": "≤128 字符，帮助服务端理解搜索意图",
     "oriQuestionPlaceholder": "例如：怎么在生产环境部署 vLLM？",
     "localization": "本地化 IP",
-    "localizationHelp": "让结果偏向该地区，留空不指定",
     "localizationPlaceholder": "203.0.113.10"
   },
   "results": {
@@ -185,7 +184,6 @@
     "sortLabel": "排序方式",
     "sortHelp": "本地排序，不额外计费；「相关度」保持接口返回顺序",
     "localizationLabel": "本地化 IP",
-    "localizationHelp": "让结果偏向该地区，留空不指定",
     "needContentLabel": "返回网页正文",
     "needContentDescription": "返回整页正文，可在结果里展开阅读。",
     "onlyQualityLabel": "只看优质结果",
@@ -209,7 +207,7 @@
     "rateText": "账号级 5 QPS，触发限速时会提示稍后重试。",
     "rateLink": "官方接口指南",
     "dataTitle": "数据流向",
-    "dataText": "没有自建服务端：除按配置把 API Key 与搜索词发送到你填写的 API 地址外，不向其它服务器发送或存储任何数据。",
+    "dataText": "没有自建服务端：除按配置把 API Key 与搜索词发送到你填写的 API 地址外，不向其它服务器发送或存储数据。选择「自动获取」时会请求 myip.ipip.net，该请求不携带 Key 与搜索词。",
     "dutyTitle": "使用责任",
     "dutyText": "API Key 的保管、账号费用以及结果的使用方式由使用者负责；请遵守 DeepSeek 服务条款，并自行判断结果是否适用。",
     "storageTitle": "本地存储",
@@ -292,5 +290,14 @@
     "missingKeyTitle": "尚未配置 API Key",
     "missingKeyDetail": "Search 接口使用 Bearer 鉴权，需要你自己的 DeepSeek API Key。",
     "missingKeyHint": "填入后即可搜索；Key 只保存在当前浏览器。"
+  },
+  "localization": {
+    "modeAuto": "自动获取",
+    "modeCustom": "自定义",
+    "customHelp": "让结果偏向该地区；留空不指定。",
+    "autoHelp": "启动时自动获取公网 IP。",
+    "autoDetecting": "正在获取本机 IP…",
+    "autoFailedKeep": "获取失败，沿用上次的 IP。",
+    "autoFailedNone": "获取失败，本次搜索不指定地区。"
   }
 }

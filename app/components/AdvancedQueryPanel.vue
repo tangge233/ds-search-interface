@@ -17,6 +17,8 @@ const emit = defineEmits<{ apply: [string] }>()
 
 const { t } = useI18n()
 const { prefs } = useSearchSettings()
+const { detecting, failed, setMode } = useLocalizationIp()
+const { localizationModeItems } = usePresetItems()
 const oriQuestion = defineModel<string>('oriQuestion', { default: '' })
 
 const fields = reactive<QueryBuilderFields>({ ...EMPTY_BUILDER_FIELDS })
@@ -34,6 +36,11 @@ function fillFromQuery() {
 
 function clearFields() {
   Object.assign(fields, EMPTY_BUILDER_FIELDS)
+}
+
+/** URadioGroup 的值类型是联合类型，收窄后交给 setMode，避免在模板里断言。 */
+function onModeChange(value: unknown) {
+  if (value === 'auto' || value === 'custom') void setMode(value)
 }
 </script>
 
@@ -119,8 +126,33 @@ function clearFields() {
         >
           <UInput v-model="oriQuestion" :placeholder="t('advanced.oriQuestionPlaceholder')" class="w-full" />
         </UFormField>
-        <UFormField :label="t('advanced.localization')" :hint="t('advanced.optional')" :help="t('advanced.localizationHelp')">
-          <UInput v-model="prefs.localization" :placeholder="t('advanced.localizationPlaceholder')" class="w-full" />
+        <UFormField :label="t('advanced.localization')" :hint="t('advanced.optional')">
+          <div class="space-y-2.5">
+            <URadioGroup
+              :model-value="prefs.localizationMode"
+              :items="localizationModeItems"
+              orientation="horizontal"
+              @update:model-value="onModeChange"
+            />
+
+            <template v-if="prefs.localizationMode === 'custom'">
+              <UInput
+                v-model="prefs.localization"
+                :placeholder="t('advanced.localizationPlaceholder')"
+                class="w-full"
+              />
+              <p class="text-xs text-dimmed">{{ t('localization.customHelp') }}</p>
+            </template>
+
+            <template v-else>
+              <p v-if="prefs.localization" class="font-mono text-sm text-toned">{{ prefs.localization }}</p>
+              <p v-if="detecting" class="text-xs text-dimmed">{{ t('localization.autoDetecting') }}</p>
+              <p v-else-if="failed" class="text-xs text-error">
+                {{ prefs.localization ? t('localization.autoFailedKeep') : t('localization.autoFailedNone') }}
+              </p>
+              <p v-else class="text-xs text-dimmed">{{ t('localization.autoHelp') }}</p>
+            </template>
+          </div>
         </UFormField>
       </div>
     </div>

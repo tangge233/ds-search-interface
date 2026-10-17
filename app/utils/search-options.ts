@@ -1,5 +1,6 @@
 import type { SearchSortKey } from '~/types/search'
 import { countCharacters } from '~/utils/format'
+import { isIpAddress } from '~/utils/ip-address'
 
 /**
  * 输入校验。范围来自官方文档：
@@ -12,24 +13,6 @@ export type ValidationKey =
   | 'errors.validation.queryTooLong'
   | 'errors.validation.oriQuestionTooLong'
   | 'errors.validation.localization'
-
-/** 每段 0～255，且不接受前导零（`01` 在不同系统里会被当成八进制或直接拒绝）。 */
-const IPV4 = /^(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/
-
-/**
- * IPv6 交给 URL 解析器判定：方括号里只接受 IPv6 字面量，
- * 非法地址（`::::`、超过 8 段、单段超过 4 位）构造时就会抛出，
- * 比手写正则可靠，也不用额外依赖。
- */
-function isIPv6(value: string): boolean {
-  if (!value.includes(':')) return false
-  try {
-    new URL(`http://[${value}]/`)
-    return true
-  } catch {
-    return false
-  }
-}
 
 export function validateSearchInput(input: {
   query: string
@@ -44,7 +27,7 @@ export function validateSearchInput(input: {
   if (countCharacters(oriQuestion) > 128) return 'errors.validation.oriQuestionTooLong'
 
   const localization = input.localization?.trim() ?? ''
-  if (localization && !IPV4.test(localization) && !isIPv6(localization)) {
+  if (localization && !isIpAddress(localization)) {
     return 'errors.validation.localization'
   }
 
