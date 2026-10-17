@@ -1,0 +1,297 @@
+{
+  "app": {
+    "name": "DeepSeek Search Interface"
+  },
+  "meta": {
+    "title": "DeepSeek Search Interface",
+    "description": "A frontend-only web search UI for the DeepSeek Search API. Your API key never leaves this browser."
+  },
+  "common": {
+    "retry": "Retry",
+    "openSettings": "Open settings",
+    "backHome": "Back to start"
+  },
+  "header": {
+    "settings": "Settings",
+    "settingsApiKey": "Set API key",
+    "customBaseUrl": "Custom endpoint"
+  },
+  "home": {
+    "description": "Search the live web with relevance scores and authority ratings. Your API key stays in this browser.",
+    "syntaxHint": "Type site: lang: after: to get completions, then Tab to insert. Press / to focus the search box.",
+    "apiKeyAlertTitle": "Add your DeepSeek API key first",
+    "apiKeyAlertDescription": "Searches go straight from the browser to api.deepseek.com. The key never leaves this device.",
+    "goSettings": "Open settings",
+    "syntaxToggle": "Supported search syntax",
+    "historyTitle": "Recent searches",
+    "historyClear": "Clear"
+  },
+  "search": {
+    "placeholder": "Type keywords, or use site: lang: after: syntax",
+    "submit": "Search",
+    "clear": "Clear the query",
+    "completionHint": "↑↓ to choose · Tab to insert · Esc to close",
+    "length": "{count} / 128 characters",
+    "lengthOver": "{count} / 128 characters — over the limit, cannot submit",
+    "countLabel": "Results",
+    "countAria": "Number of results",
+    "sortLabel": "Sort",
+    "sortAria": "Sort order",
+    "needContent": "Full text",
+    "needContentAria": "Return page content",
+    "onlyQuality": "Quality only",
+    "onlyQualityAria": "Only results scoring at least 1.5",
+    "advanced": "Query builder",
+    "resetTooltip": "Reset query options (count, sort, switches, localization IP)",
+    "resetAria": "Reset query options"
+  },
+  "preset": {
+    "countOption": "{count} results",
+    "sort": {
+      "relevance": "Relevance",
+      "authority": "Authority first",
+      "date": "Newest first"
+    },
+    "layout": {
+      "center": "Centered, one column",
+      "left": "Left-aligned, one column",
+      "columns": "Multi-column on wide screens"
+    }
+  },
+  "advanced": {
+    "title": "Query builder",
+    "parse": "Parse from search box",
+    "clearFields": "Clear fields",
+    "syntaxList": "Syntax cheat sheet",
+    "previewLabel": "Generated query",
+    "previewEmpty": "(no conditions yet)",
+    "apply": "Apply and search",
+    "applyHint": "Replaces the search box content and searches immediately.",
+    "keywords": "All keywords",
+    "keywordsPlaceholder": "Space-separated; results must contain all of them",
+    "phrase": "Exact phrase",
+    "phrasePlaceholder": "Match the whole phrase",
+    "excludeKeywords": "Exclude keywords",
+    "excludeKeywordsPlaceholder": "ads sponsorship",
+    "excludePhrase": "Exclude phrase",
+    "excludePhrasePlaceholder": "release notes",
+    "site": "Limit to sites",
+    "siteHelp": "Several sites are joined with OR",
+    "sitePlaceholder": "github.com huggingface.co",
+    "excludeSite": "Exclude sites",
+    "excludeSitePlaceholder": "example.com",
+    "lang": "Language",
+    "langHelp": "Comma-separated; generates lang:zh,en",
+    "langPlaceholder": "en,zh",
+    "after": "Published after",
+    "afterHelp": "Generates after:",
+    "afterPlaceholder": "2025 or 2025-01-01",
+    "before": "Published before",
+    "beforeHelp": "Generates before:",
+    "beforePlaceholder": "2026",
+    "oriQuestion": "Original question",
+    "optional": "Optional",
+    "oriQuestionHelp": "Up to 128 characters; helps the server understand your intent",
+    "oriQuestionPlaceholder": "e.g. how do I deploy vLLM in production?",
+    "localization": "Localization IP",
+    "localizationHelp": "Bias results toward this region; leave empty to skip",
+    "localizationPlaceholder": "203.0.113.10"
+  },
+  "results": {
+    "loading": "Searching for “{query}”…",
+    "summary": "“{query}” returned {count} results",
+    "hidden": ", {count} hidden by local settings",
+    "elapsed": "Took {seconds}s",
+    "emptyTitle": "No results to show",
+    "emptyFiltered": "Nothing matches the current filters. Try turning off local filtering.",
+    "emptySearch": "Try different wording, or drop qualifiers like site: / after:.",
+    "disableQualityFilter": "Turn off “Quality only”",
+    "footer": "Results come from the DeepSeek Search API. This page only renders them — it does not proxy or store your requests."
+  },
+  "result": {
+    "untitled": "(untitled)",
+    "contentLabel": "Page content (raw Markdown, showing up to 20,000 characters)",
+    "copyContent": "Copy text",
+    "contentCopied": "Page content copied",
+    "scoreTooltip": "Combined relevance score 0–3; 1.5 and above is high quality",
+    "score": "{score} pts",
+    "authorityUnknown": "Authority unknown",
+    "authority": "Authority {level}/4",
+    "authorityExtreme": "Very authoritative {level}/4",
+    "summary": "Long summary ({count} characters; good for handing to a model)",
+    "summaryOpen": "Summary",
+    "summaryCopied": "Summary copied",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied",
+    "open": "Open",
+    "showContent": "Content",
+    "hideContent": "Hide content",
+    "copyFailed": "Copy failed",
+    "copyFailedDescription": "The browser denied clipboard access. Select the text and copy it manually.",
+    "copySummary": "Copy summary"
+  },
+  "syntax": {
+    "listTitle": "Supported search syntax",
+    "site": "Limit results to these sites; combine several with OR",
+    "excludeSite": "Exclude these sites",
+    "phrase": "Match this exact phrase",
+    "excludeKeyword": "Exclude pages containing this keyword",
+    "excludePhrase": "Exclude pages containing this phrase",
+    "lang": "Limit the language; separate several with commas",
+    "after": "Only pages published after this date",
+    "before": "Only pages published before this date",
+    "completion": {
+      "lang": "Limit the language, e.g. lang:zh,en",
+      "afterYear": "After {year}",
+      "beforeYear": "Before {year}"
+    },
+    "languages": {
+      "zh": "Chinese",
+      "en": "English",
+      "ja": "Japanese",
+      "ko": "Korean",
+      "fr": "French",
+      "de": "German",
+      "es": "Spanish",
+      "ru": "Russian"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Everything here is stored on this device only.",
+    "sectionConnection": "Connection",
+    "sectionDefaults": "Search defaults",
+    "sectionInterface": "Interface & history",
+    "sectionAbout": "About",
+    "connectionDescription": "Searches go from your browser straight to this address; credentials never pass through a third party.",
+    "apiKeyLabel": "API key",
+    "apiKeyHelp": "Create one under API Keys on platform.deepseek.com; it looks like sk-…",
+    "showKey": "Show API key",
+    "hideKey": "Hide API key",
+    "saveConnection": "Save connection",
+    "savedTitle": "Connection saved",
+    "savedDescription": "The API key is only written to localStorage on this device.",
+    "verify": "Verify key",
+    "clearKey": "Remove key",
+    "keyCleared": "Removed the API key from this device",
+    "baseUrlLabel": "API endpoint",
+    "advancedHint": "Advanced",
+    "baseUrlHelp": "Defaults to the official endpoint. Replace it if your key has to go through a self-hosted gateway.",
+    "checkValidTitle": "Key is valid",
+    "checkInvalidTitle": "Key is not usable",
+    "checkUnknownTitle": "Could not confirm the key",
+    "defaultsDescription": "These are the same options as the toolbar on the results page: changing them here changes the defaults, while the toolbar makes one-off adjustments.",
+    "countLabel": "Results per search",
+    "countHelp": "1–50; affects only how many results come back, not billing",
+    "sortLabel": "Sort order",
+    "sortHelp": "Sorted locally over the returned results at no extra cost; “Relevance” keeps the API order",
+    "localizationLabel": "Localization IP",
+    "localizationHelp": "Bias results toward this region; leave empty to skip",
+    "needContentLabel": "Return page content",
+    "needContentDescription": "Returns the full page in content, which you can then read inline.",
+    "onlyQualityLabel": "Quality results only",
+    "onlyQualityDescription": "Hides results scoring below 1.5.",
+    "interfaceDescription": "These take effect immediately; there is nothing to save.",
+    "layoutLabel": "Results layout",
+    "layoutHelp": "Multi-column shows two columns at 1024px and wider.",
+    "languageLabel": "Interface language",
+    "languageHelp": "Applies immediately and is remembered on this device.",
+    "keepHistoryLabel": "Keep search history",
+    "keepHistoryDescription": "Turning this off stops recording and clears existing history.",
+    "aboutIntro": "DeepSeek Search Interface is a frontend-only UI built with Vue 3, Nuxt 4 and Nuxt UI.",
+    "aboutApiDocs": "DeepSeek Search API docs",
+    "licenseText": "Released under the MIT license: free to use, modify and redistribute, including commercially; redistributions must keep the original copyright notice and the full license text.",
+    "githubRepo": "GitHub repository",
+    "licenseLink": "Full MIT license",
+    "billingTitle": "Billing",
+    "billingText": "Search costs CNY 5 per 1,000 successful requests; only requests that return results are billed. “Verify key” calls /models, which is not billed as a search. Prices may change — see the official pricing page for the authoritative numbers.",
+    "billingLink": "DeepSeek pricing documentation",
+    "rateTitle": "Rate limits",
+    "rateText": "5 QPS per account. When you hit the limit the page asks you to retry shortly; see the official guide for details.",
+    "rateLink": "official API guide",
+    "dataTitle": "Where data goes",
+    "dataText": "This page has no backend of its own. Apart from sending your API key and query to the API endpoint you configured (the official DeepSeek endpoint by default), nothing is uploaded to or stored on any other server. Settings and search history live in localStorage on this device and disappear when you clear browser data.",
+    "dutyTitle": "Your responsibility",
+    "dutyText": "You are responsible for safeguarding your API key, your account quota and charges, and how you use the results. Follow DeepSeek's terms of service and judge for yourself whether results fit your scenario — this UI only displays them and does not vouch for their accuracy.",
+    "storageTitle": "Limits of local storage",
+    "storageText": "The key is stored in plain text in localStorage and readable by any script running on this device. On a shared computer, click “Remove key” when you are done."
+  },
+  "verify": {
+    "valid": "Key is valid — you can search now.",
+    "invalidKey": "The API key is invalid or was deleted.",
+    "insufficient": "The account balance is too low; top up and retry.",
+    "httpError": "The API returned HTTP {status}; the key status is unknown.",
+    "httpErrorWithMessage": "The API returned HTTP {status}: {message}. The key status is unknown.",
+    "network": "The request could not be sent (offline, proxy or CORS). You can try searching anyway.",
+    "enterKeyFirst": "Enter an API key first.",
+    "failed": "The verification request failed. Try again later."
+  },
+  "errors": {
+    "validation": {
+      "emptyQuery": "Enter a search query.",
+      "queryTooLong": "Queries are limited to 128 characters.",
+      "oriQuestionTooLong": "The original question is limited to 128 characters.",
+      "localization": "The localization IP is not a valid address, e.g. 203.0.113.10 or 2001:db8::1."
+    },
+    "contract": {
+      "missingResults": "The response has no results field — it may not come from the Search API.",
+      "resultsNotArray": "The results field is not an array — it may not come from the Search API.",
+      "itemsMissingUrl": "Items in results have no url field; the API may use different field names than the docs.",
+      "title": "Unexpected response format",
+      "hint": "Check that the API endpoint points to a DeepSeek Search–compatible service, or make your gateway forward the results field unchanged."
+    },
+    "status": {
+      "400": {
+        "title": "Invalid request",
+        "hint": "Check that the query is 1–128 characters and the syntax follows the docs."
+      },
+      "401": {
+        "title": "Invalid API key",
+        "hint": "Enter the key again in settings and confirm it belongs to this account and has not been deleted."
+      },
+      "402": {
+        "title": "Insufficient balance",
+        "hint": "Search bills CNY 5 per 1,000 successful requests. Top up and retry."
+      },
+      "403": {
+        "title": "Request rejected",
+        "hint": "The API's safety policy blocked this request. Try a different query."
+      },
+      "404": {
+        "title": "No content available",
+        "hint": "The target resource is unavailable. Adjust the query and retry."
+      },
+      "408": {
+        "title": "Request timed out",
+        "hint": "Wait a few seconds and retry."
+      },
+      "413": {
+        "title": "Payload too large",
+        "hint": "Trim the query and options, then retry."
+      },
+      "429": {
+        "title": "Too many requests",
+        "hint": "Search allows 5 QPS per account. Wait a moment and search again."
+      },
+      "500": {
+        "title": "Internal server error",
+        "hint": "Retry after a moment; repeated failures point to a server-side problem."
+      },
+      "504": {
+        "title": "Upstream timeout",
+        "hint": "Retry after a moment."
+      }
+    },
+    "statusDetailMissing": "The API did not include a detailed explanation.",
+    "httpTitle": "Request failed (HTTP {status})",
+    "unexpectedStatusDetail": "The API returned an unexpected status code.",
+    "unknownStatusHint": "Retry shortly; if it keeps failing, change the API endpoint in settings.",
+    "networkTitle": "Cannot reach the DeepSeek API",
+    "networkHint": "Check your connection. If you use a proxy or custom endpoint, it must allow browser cross-origin requests (CORS).",
+    "invalidInputTitle": "Options do not meet the API requirements",
+    "invalidInputHint": "Fix it and submit again.",
+    "missingKeyTitle": "No API key configured",
+    "missingKeyDetail": "The Search API uses Bearer auth, so it needs your own DeepSeek API key.",
+    "missingKeyHint": "Add the key and search right away — it stays in this browser."
+  }
+}

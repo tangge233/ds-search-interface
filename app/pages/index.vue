@@ -7,6 +7,7 @@
  */
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 
 const { prefs, hasApiKey } = useSearchSettings()
 const { items: history, clearAll: clearHistory } = useSearchHistory()
@@ -30,6 +31,7 @@ const syntaxOpen = ref(false)
 const heroField = useTemplateRef<{ focus: () => void } | null>('heroField')
 const resultField = useTemplateRef<{ focus: () => void } | null>('resultField')
 
+/** 示例查询本身就是搜索语法，不随界面语言翻译。 */
 const EXAMPLES = [
   'DeepSeek V4 模型 发布',
   'site:github.com vLLM 部署',
@@ -56,6 +58,23 @@ const resultsClass = computed(() =>
 
 /** 多列时用每条结果自己的下边框当分隔线，单列时交给容器的 divide。 */
 const cardClass = computed(() => (prefs.resultsLayout === 'columns' ? 'border-b border-default' : ''))
+
+/**
+ * 失败信息在渲染时才翻译：错误展示期间切换语言，文案会跟着变。
+ * 服务端原文优先，它本来就是 API 用自己的语言返回的。
+ */
+const failureTitle = computed(() =>
+  failure.value ? t(failure.value.titleKey, failure.value.titleParams ?? {}) : ''
+)
+const failureDetail = computed(() => {
+  const value = failure.value
+  if (!value) return ''
+  if (value.serverMessage) return value.serverMessage
+  return value.detailKey ? t(value.detailKey) : ''
+})
+const failureHint = computed(() =>
+  failure.value ? t(failure.value.hintKey, failure.value.hintParams ?? {}) : ''
+)
 
 async function submit() {
   const trimmed = query.value.trim()
@@ -124,10 +143,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     <main v-if="isIdle" class="flex-1">
       <div class="mx-auto w-full max-w-2xl px-4 pt-[12vh] pb-16 text-center">
         <h1 class="text-3xl font-semibold tracking-tight text-highlighted sm:text-4xl">
-          DeepSeek 搜索交互工具
+          {{ t('app.name') }}
         </h1>
         <p class="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted">
-          检索实时网页，结果带相关度得分与权威性评级；API Key 只保存在这台设备的浏览器里。
+          {{ t('home.description') }}
         </p>
 
         <div class="mt-8">
@@ -140,9 +159,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             @submit="submit"
           />
           <p class="mt-2 text-left text-xs text-dimmed">
-            输入 <code class="font-mono">site:</code> <code class="font-mono">lang:</code>
-            <code class="font-mono">after:</code> 时会出现补全提示，Tab 插入；按
-            <code class="font-mono">/</code> 聚焦搜索框。
+            {{ t('home.syntaxHint') }}
           </p>
         </div>
 
@@ -152,11 +169,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
           color="warning"
           variant="subtle"
           icon="i-lucide-key-round"
-          title="先填入自己的 DeepSeek API Key"
-          description="搜索请求由浏览器直连 api.deepseek.com，Key 不会离开本机。"
+          :title="t('home.apiKeyAlertTitle')"
+          :description="t('home.apiKeyAlertDescription')"
         >
           <template #actions>
-            <UButton size="xs" label="去设置" @click="settingsOpen = true" />
+            <UButton size="xs" :label="t('home.goSettings')" @click="settingsOpen = true" />
           </template>
         </UAlert>
 
@@ -180,19 +197,19 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             @click="syntaxOpen = !syntaxOpen"
           >
             <UIcon :name="syntaxOpen ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'" class="size-3.5" />
-            支持的搜索语法
+            {{ t('home.syntaxToggle') }}
           </button>
           <SearchSyntaxList v-if="syntaxOpen" class="mt-3" @use="searchWith" />
         </div>
 
         <section v-if="prefs.keepHistory && history.length" class="mt-6 text-left">
           <div class="flex items-baseline justify-between">
-            <h2 class="text-xs text-toned">最近搜索</h2>
+            <h2 class="text-xs text-toned">{{ t('home.historyTitle') }}</h2>
             <UButton
               color="neutral"
               variant="link"
               size="xs"
-              label="清除"
+              :label="t('home.historyClear')"
               @click="clearHistory"
             />
           </div>
@@ -234,13 +251,13 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
       <section class="pt-5">
         <header class="flex flex-wrap items-baseline justify-between gap-2">
           <p class="text-sm text-muted">
-            <template v-if="status === 'loading'">正在搜索「{{ lastQuery }}」…</template>
+            <template v-if="status === 'loading'">{{ t('results.loading', { query: lastQuery }) }}</template>
             <template v-else-if="status === 'success'">
-              「{{ lastQuery }}」返回 {{ results.length }} 条<template v-if="hiddenCount">，本地设置隐藏了 {{ hiddenCount }} 条</template>
+              {{ t('results.summary', { query: lastQuery, count: results.length }) }}<template v-if="hiddenCount">{{ t('results.hidden', { count: hiddenCount }) }}</template>
             </template>
           </p>
           <p v-if="status === 'success'" class="text-xs tabular-nums text-dimmed">
-            用时 {{ (elapsedMs / 1000).toFixed(1) }} 秒
+            {{ t('results.elapsed', { seconds: (elapsedMs / 1000).toFixed(1) }) }}
           </p>
         </header>
 
@@ -251,27 +268,27 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             color="error"
             variant="subtle"
             icon="i-lucide-triangle-alert"
-            :title="failure.title"
-            :description="failure.detail"
+            :title="failureTitle"
+            :description="failureDetail"
           />
-          <p class="text-sm text-muted">{{ failure.hint }}</p>
+          <p class="text-sm text-muted">{{ failureHint }}</p>
           <div class="flex flex-wrap gap-2">
             <UButton
               v-if="failure.retryable"
-              label="重试"
+              :label="t('common.retry')"
               icon="i-lucide-refresh-cw"
               @click="submit"
             />
             <UButton
               v-if="failure.needsApiKey || failure.status === 401"
-              label="打开设置"
+              :label="t('common.openSettings')"
               icon="i-lucide-settings-2"
               color="neutral"
               variant="outline"
               @click="settingsOpen = true"
             />
             <UButton
-              label="返回首页"
+              :label="t('common.backHome')"
               icon="i-lucide-house"
               color="neutral"
               variant="ghost"
@@ -283,15 +300,13 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
         <div v-else-if="status === 'success' && !visibleResults.length" class="mt-6 space-y-4">
           <UEmpty
             icon="i-lucide-search-x"
-            title="没有可展示的结果"
-            :description="results.length
-              ? '当前筛选条件下没有结果，可以关掉本地过滤再看。'
-              : '换个说法，或去掉 site: / after: 之类的限定词再试。'"
+            :title="t('results.emptyTitle')"
+            :description="results.length ? t('results.emptyFiltered') : t('results.emptySearch')"
           />
           <div class="flex justify-center">
             <UButton
               v-if="prefs.onlyQuality && results.length"
-              label="关闭「仅优质结果」"
+              :label="t('results.disableQualityFilter')"
               color="neutral"
               variant="outline"
               size="sm"
@@ -299,7 +314,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             />
             <UButton
               v-else
-              label="返回首页"
+              :label="t('common.backHome')"
               color="neutral"
               variant="ghost"
               size="sm"
@@ -322,7 +337,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
     <footer class="border-t border-default py-6">
       <p :class="['w-full px-4 text-xs text-dimmed', containerClass]">
-        结果由 DeepSeek Search API 提供；本页面只做前端展示，不代理、不存储你的请求。
+        {{ t('results.footer') }}
       </p>
     </footer>
 

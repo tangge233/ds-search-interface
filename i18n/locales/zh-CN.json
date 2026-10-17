@@ -1,0 +1,297 @@
+{
+  "app": {
+    "name": "DeepSeek 搜索交互工具"
+  },
+  "meta": {
+    "title": "DeepSeek 搜索交互工具",
+    "description": "DeepSeek 搜索交互工具：调用 DeepSeek Search API 的纯前端网页搜索，API Key 只保存在本地浏览器。"
+  },
+  "common": {
+    "retry": "重试",
+    "openSettings": "打开设置",
+    "backHome": "返回首页"
+  },
+  "header": {
+    "settings": "设置",
+    "settingsApiKey": "设置 API Key",
+    "customBaseUrl": "自定义地址"
+  },
+  "home": {
+    "description": "检索实时网页，结果带相关度得分与权威性评级；API Key 只保存在这台设备的浏览器里。",
+    "syntaxHint": "输入 site: lang: after: 时会出现补全提示，Tab 插入；按 / 聚焦搜索框。",
+    "apiKeyAlertTitle": "先填入自己的 DeepSeek API Key",
+    "apiKeyAlertDescription": "搜索请求由浏览器直连 api.deepseek.com，Key 不会离开本机。",
+    "goSettings": "去设置",
+    "syntaxToggle": "支持的搜索语法",
+    "historyTitle": "最近搜索",
+    "historyClear": "清除"
+  },
+  "search": {
+    "placeholder": "输入关键词，或使用 site: lang: after: 等语法",
+    "submit": "搜索",
+    "clear": "清空搜索词",
+    "completionHint": "↑↓ 选择 · Tab 插入 · Esc 关闭",
+    "length": "{count} / 128 个字符",
+    "lengthOver": "{count} / 128 个字符，超出上限无法提交",
+    "countLabel": "条数",
+    "countAria": "返回条数",
+    "sortLabel": "排序",
+    "sortAria": "排序方式",
+    "needContent": "返回正文",
+    "needContentAria": "返回网页正文",
+    "onlyQuality": "仅优质结果",
+    "onlyQualityAria": "只看相关度不低于 1.5 的结果",
+    "advanced": "高级语法",
+    "resetTooltip": "恢复默认参数（条数、排序、开关、本地化 IP）",
+    "resetAria": "恢复默认参数"
+  },
+  "preset": {
+    "countOption": "{count} 条",
+    "sort": {
+      "relevance": "相关度",
+      "authority": "权威性优先",
+      "date": "发布时间优先"
+    },
+    "layout": {
+      "center": "居中单列",
+      "left": "靠左单列",
+      "columns": "宽屏多列"
+    }
+  },
+  "advanced": {
+    "title": "高级语法生成器",
+    "parse": "从搜索框解析",
+    "clearFields": "清空条件",
+    "syntaxList": "语法速查",
+    "previewLabel": "生成的搜索词",
+    "previewEmpty": "（还没有填写任何条件）",
+    "apply": "写入并搜索",
+    "applyHint": "写入后会替换搜索框内容并立即搜索。",
+    "keywords": "全部关键词",
+    "keywordsPlaceholder": "空格分隔，结果需全部包含",
+    "phrase": "精确短语",
+    "phrasePlaceholder": "整句匹配",
+    "excludeKeywords": "排除关键词",
+    "excludeKeywordsPlaceholder": "广告 推广",
+    "excludePhrase": "排除短语",
+    "excludePhrasePlaceholder": "release notes",
+    "site": "限定站点",
+    "siteHelp": "多个站点自动用 OR 连接",
+    "sitePlaceholder": "github.com huggingface.co",
+    "excludeSite": "排除站点",
+    "excludeSitePlaceholder": "example.com",
+    "lang": "语言",
+    "langHelp": "逗号分隔，生成 lang:zh,en",
+    "langPlaceholder": "zh,en",
+    "after": "起始时间",
+    "afterHelp": "生成 after:",
+    "afterPlaceholder": "2025 或 2025-01-01",
+    "before": "结束时间",
+    "beforeHelp": "生成 before:",
+    "beforePlaceholder": "2026",
+    "oriQuestion": "原始问题",
+    "optional": "可选",
+    "oriQuestionHelp": "≤128 字符，帮助服务端理解搜索意图",
+    "oriQuestionPlaceholder": "例如：怎么在生产环境部署 vLLM？",
+    "localization": "本地化 IP",
+    "localizationHelp": "让结果偏向该地区，留空表示不指定",
+    "localizationPlaceholder": "203.0.113.10"
+  },
+  "results": {
+    "loading": "正在搜索「{query}」…",
+    "summary": "「{query}」返回 {count} 条",
+    "hidden": "，本地设置隐藏了 {count} 条",
+    "elapsed": "用时 {seconds} 秒",
+    "emptyTitle": "没有可展示的结果",
+    "emptyFiltered": "当前筛选条件下没有结果，可以关掉本地过滤再看。",
+    "emptySearch": "换个说法，或去掉 site: / after: 之类的限定词再试。",
+    "disableQualityFilter": "关闭「仅优质结果」",
+    "footer": "结果由 DeepSeek Search API 提供；本页面只做前端展示，不代理、不存储你的请求。"
+  },
+  "result": {
+    "untitled": "（无标题）",
+    "contentLabel": "网页正文（Markdown 原文，最多展示 20000 字符）",
+    "copyContent": "复制正文",
+    "contentCopied": "正文已复制",
+    "scoreTooltip": "相关度综合分 0～3，≥1.5 为优质结果",
+    "score": "{score} 分",
+    "authorityUnknown": "权威性未知",
+    "authority": "权威性 {level}/4",
+    "authorityExtreme": "极权威 {level}/4",
+    "summary": "长摘要（{count} 字符，适合交给模型阅读）",
+    "summaryOpen": "长摘要",
+    "summaryCopied": "长摘要已复制",
+    "copyLink": "复制链接",
+    "linkCopied": "链接已复制",
+    "open": "打开",
+    "showContent": "正文",
+    "hideContent": "收起正文",
+    "copyFailed": "复制失败",
+    "copyFailedDescription": "浏览器未授予剪贴板权限，请手动选择文本复制。",
+    "copySummary": "复制摘要"
+  },
+  "syntax": {
+    "listTitle": "支持的搜索语法",
+    "site": "只在指定站点内搜索，多个站点用 OR 连接",
+    "excludeSite": "排除指定站点",
+    "phrase": "精确匹配短语",
+    "excludeKeyword": "排除包含该关键词的网页",
+    "excludePhrase": "排除包含该短语的网页",
+    "lang": "限定语言，多种语言用逗号分隔",
+    "after": "只保留该日期之后发布的网页",
+    "before": "只保留该日期之前发布的网页",
+    "completion": {
+      "lang": "限定语言，如 lang:zh,en",
+      "afterYear": "{year} 年之后",
+      "beforeYear": "{year} 年之前"
+    },
+    "languages": {
+      "zh": "中文",
+      "en": "英语",
+      "ja": "日语",
+      "ko": "韩语",
+      "fr": "法语",
+      "de": "德语",
+      "es": "西班牙语",
+      "ru": "俄语"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "description": "配置只保存在这台设备上，随时可以清空。",
+    "sectionConnection": "连接",
+    "sectionDefaults": "默认搜索参数",
+    "sectionInterface": "界面与记录",
+    "sectionAbout": "关于",
+    "connectionDescription": "搜索请求由浏览器直接发往该地址，凭据不经过第三方。",
+    "apiKeyLabel": "API Key",
+    "apiKeyHelp": "在 platform.deepseek.com 的 API Keys 页面创建，形如 sk-…",
+    "showKey": "显示 API Key",
+    "hideKey": "隐藏 API Key",
+    "saveConnection": "保存连接设置",
+    "savedTitle": "连接设置已保存",
+    "savedDescription": "API Key 只写入本机 localStorage。",
+    "verify": "校验凭据",
+    "clearKey": "清除本机 Key",
+    "keyCleared": "已清除本机 API Key",
+    "baseUrlLabel": "API 地址",
+    "advancedHint": "高级",
+    "baseUrlHelp": "默认直连官方接口；若你的 Key 需要通过自建网关转发，可在此替换。",
+    "checkValidTitle": "凭据有效",
+    "checkInvalidTitle": "凭据不可用",
+    "checkUnknownTitle": "无法确认凭据",
+    "defaultsDescription": "与结果页工具栏是同一份配置，改这里等于改默认值；工具栏用于临时调整。",
+    "countLabel": "返回条数",
+    "countHelp": "1～50，只影响条数，不影响计费",
+    "sortLabel": "排序方式",
+    "sortHelp": "在返回结果内本地排序，不额外计费；「相关度」即接口返回顺序",
+    "localizationLabel": "本地化 IP",
+    "localizationHelp": "让结果偏向该地区，留空表示不指定",
+    "needContentLabel": "返回网页正文",
+    "needContentDescription": "在 content 里返回整页正文，勾选后可原地细读。",
+    "onlyQualityLabel": "只看优质结果",
+    "onlyQualityDescription": "过滤掉相关度得分低于 1.5 的结果。",
+    "interfaceDescription": "这些选项立即生效，不需要保存。",
+    "layoutLabel": "结果布局",
+    "layoutHelp": "宽屏多列会在 ≥1024px 时并排显示两列结果。",
+    "languageLabel": "界面语言",
+    "languageHelp": "切换后立即生效，选择会保存在本机。",
+    "keepHistoryLabel": "保留搜索记录",
+    "keepHistoryDescription": "关掉后不再写入本机记录，并清空已有记录。",
+    "aboutIntro": "DeepSeek 搜索交互工具是一个纯前端界面，使用 Vue 3 + Nuxt 4 + Nuxt UI 构建。",
+    "aboutApiDocs": "DeepSeek Search API 文档",
+    "licenseText": "项目以 MIT 许可证开源：可自由使用、修改与再分发，包括商用；再分发时需保留原始版权声明与许可证全文。",
+    "githubRepo": "GitHub 仓库",
+    "licenseLink": "MIT 许可证全文",
+    "billingTitle": "关于计费",
+    "billingText": "Search 每 1000 次成功请求 5 元，只有返回结果的请求才计费。「校验凭据」走 /models 接口，不产生搜索计费。价格可能调整，具体以官方计费文档为准。",
+    "billingLink": "DeepSeek 官方计费文档",
+    "rateTitle": "关于限速",
+    "rateText": "账号级 5 QPS。触发限速时会提示稍后重试，细节见官方接口指南。",
+    "rateLink": "官方接口指南",
+    "dataTitle": "数据流向",
+    "dataText": "本页面不经过任何自建服务端：除了按你的配置把 API Key 与搜索词发送给你填写的 API 地址（默认 DeepSeek 官方接口）之外，不会把 API Key、搜索词或搜索结果上传或存储到其它任何服务器。配置与搜索记录只保存在本机 localStorage，清除浏览器数据即消失。",
+    "dutyTitle": "使用责任",
+    "dutyText": "API Key 的保管、账号额度与费用、以及搜索结果的使用方式都由使用者本人负责。请遵守 DeepSeek 的服务条款，并自行判断搜索结果是否适用于你的场景——界面只做展示，不对内容准确性负责。",
+    "storageTitle": "本地存储的边界",
+    "storageText": "Key 以明文存放在浏览器 localStorage，任何在本机执行的脚本都能读到。公共电脑上请用完后点「清除本机 Key」。"
+  },
+  "verify": {
+    "valid": "凭据有效，可以开始搜索。",
+    "invalidKey": "API Key 无效或已被删除。",
+    "insufficient": "账号余额不足，充值后即可搜索。",
+    "httpError": "接口返回 HTTP {status}，无法确认 Key 状态。",
+    "httpErrorWithMessage": "接口返回 HTTP {status}：{message}，无法确认 Key 状态。",
+    "network": "请求没能发出（离线、代理或跨域被拒），可以直接尝试搜索。",
+    "enterKeyFirst": "请先填入 API Key。",
+    "failed": "校验请求异常，请稍后重试。"
+  },
+  "errors": {
+    "validation": {
+      "emptyQuery": "请输入搜索词。",
+      "queryTooLong": "搜索词最多 128 个字符，请精简后重试。",
+      "oriQuestionTooLong": "原始问题最多 128 个字符。",
+      "localization": "本地化 IP 格式不正确，例如 203.0.113.10 或 2001:db8::1。"
+    },
+    "contract": {
+      "missingResults": "响应缺少 results 字段，可能不是 Search 接口返回的数据。",
+      "resultsNotArray": "响应里的 results 不是数组，可能不是 Search 接口返回的数据。",
+      "itemsMissingUrl": "results 中的条目缺少 url 字段，接口返回的字段名可能不是文档中的写法。",
+      "title": "接口响应格式异常",
+      "hint": "确认 API 地址指向 DeepSeek Search 兼容接口，或让自建网关原样转发 results 字段。"
+    },
+    "status": {
+      "400": {
+        "title": "请求不合法",
+        "hint": "检查搜索词是否为 1～128 字符、搜索语法是否符合文档写法。"
+      },
+      "401": {
+        "title": "API Key 无效",
+        "hint": "在设置中重新填写 API Key，确认它属于当前账号且未被删除。"
+      },
+      "402": {
+        "title": "账号余额不足",
+        "hint": "Search 按成功请求计费（5 元 / 1000 次），充值后可直接重试。"
+      },
+      "403": {
+        "title": "请求被拒绝",
+        "hint": "接口安全策略拦下了本次请求，换个搜索词再试。"
+      },
+      "404": {
+        "title": "没有可用内容",
+        "hint": "目标资源不可用，调整搜索词后重试。"
+      },
+      "408": {
+        "title": "请求超时",
+        "hint": "等待几秒后重试。"
+      },
+      "413": {
+        "title": "请求体过大",
+        "hint": "精简搜索词与参数后重试。"
+      },
+      "429": {
+        "title": "请求过于频繁",
+        "hint": "Search 限速为每账号 5 QPS，稍等片刻再搜索。"
+      },
+      "500": {
+        "title": "服务端内部错误",
+        "hint": "等待后重试；持续失败说明服务端异常。"
+      },
+      "504": {
+        "title": "下游请求超时",
+        "hint": "等待后重试。"
+      }
+    },
+    "statusDetailMissing": "接口未返回更详细的说明。",
+    "httpTitle": "请求失败（HTTP {status}）",
+    "unexpectedStatusDetail": "接口返回了未预期的状态码。",
+    "unknownStatusHint": "稍后重试；若持续失败，可在设置中更换 API 地址。",
+    "networkTitle": "无法连接到 DeepSeek API",
+    "networkHint": "确认网络可用；若经过代理或自定义 API 地址，该地址需允许浏览器跨域访问（CORS）。",
+    "invalidInputTitle": "参数不符合接口要求",
+    "invalidInputHint": "修正后即可提交。",
+    "missingKeyTitle": "尚未配置 API Key",
+    "missingKeyDetail": "Search 接口使用 Bearer 鉴权，需要你自己的 DeepSeek API Key。",
+    "missingKeyHint": "填入 API Key 后立刻可以搜索，它只保存在当前浏览器。"
+  }
+}

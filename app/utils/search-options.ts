@@ -5,8 +5,13 @@ import { countCharacters } from '~/utils/format'
  * 输入校验。范围来自官方文档：
  * query / ori_question 为 1～128 个 Unicode 字符且不能全为空白；
  * localization 是用于本地化排序的 IP 地址。
- * 返回 null 表示通过，否则返回可直接展示的中文提示。
+ * 返回 null 表示通过，否则返回可直接交给 t() 的文案 key。
  */
+export type ValidationKey =
+  | 'errors.validation.emptyQuery'
+  | 'errors.validation.queryTooLong'
+  | 'errors.validation.oriQuestionTooLong'
+  | 'errors.validation.localization'
 
 /** 每段 0～255，且不接受前导零（`01` 在不同系统里会被当成八进制或直接拒绝）。 */
 const IPV4 = /^(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/
@@ -30,17 +35,17 @@ export function validateSearchInput(input: {
   query: string
   oriQuestion?: string
   localization?: string
-}): string | null {
+}): ValidationKey | null {
   const query = input.query.trim()
-  if (!query) return '请输入搜索词。'
-  if (countCharacters(query) > 128) return '搜索词最多 128 个字符，请精简后重试。'
+  if (!query) return 'errors.validation.emptyQuery'
+  if (countCharacters(query) > 128) return 'errors.validation.queryTooLong'
 
   const oriQuestion = input.oriQuestion?.trim() ?? ''
-  if (countCharacters(oriQuestion) > 128) return '原始问题最多 128 个字符。'
+  if (countCharacters(oriQuestion) > 128) return 'errors.validation.oriQuestionTooLong'
 
   const localization = input.localization?.trim() ?? ''
   if (localization && !IPV4.test(localization) && !isIPv6(localization)) {
-    return '本地化 IP 格式不正确，例如 203.0.113.10 或 2001:db8::1。'
+    return 'errors.validation.localization'
   }
 
   return null

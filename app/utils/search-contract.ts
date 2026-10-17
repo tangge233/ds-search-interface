@@ -44,12 +44,12 @@ function toResultItem(raw: object): SearchResultItem | null {
  */
 export function normalizeResults(payload: unknown): SearchResultItem[] {
   if (typeof payload !== 'object' || payload === null || !('results' in payload)) {
-    throw new SearchContractError('响应缺少 results 字段，可能不是 Search 接口返回的数据。')
+    throw new SearchContractError('missingResults')
   }
 
   const results = payload.results
   if (!Array.isArray(results)) {
-    throw new SearchContractError('响应里的 results 不是数组，可能不是 Search 接口返回的数据。')
+    throw new SearchContractError('resultsNotArray')
   }
 
   const items: SearchResultItem[] = []
@@ -60,7 +60,7 @@ export function normalizeResults(payload: unknown): SearchResultItem[] {
   }
 
   if (results.length > 0 && items.length === 0) {
-    throw new SearchContractError('results 中的条目缺少 url 字段，接口返回的字段名可能不是文档中的写法。')
+    throw new SearchContractError('itemsMissingUrl')
   }
 
   return items

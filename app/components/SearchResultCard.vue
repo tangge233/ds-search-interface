@@ -8,6 +8,7 @@ import type { SearchResultItem } from '~/types/search'
  */
 const props = defineProps<{ item: SearchResultItem; rank: number }>()
 
+const { t } = useI18n()
 const toast = useToast()
 
 /** 图标加载失败（站点无 favicon、被 CSP 拦）时退回通用图标，避免破图。 */
@@ -20,15 +21,16 @@ const endpoint = computed(() => shortUrl(props.item.url))
 const scoreBadge = computed(() => scoreColor(props.item.rerank_score))
 const authorityBadge = computed(() => authorityMeta(props.item.authority))
 
-async function copy(text: string, title: string) {
+/** titleKey 由调用方给出，成功提示因此跟着界面语言走。 */
+async function copy(text: string, titleKey: string) {
   try {
     await navigator.clipboard.writeText(text)
-    toast.add({ title, icon: 'i-lucide-check', color: 'success' })
+    toast.add({ title: t(titleKey), icon: 'i-lucide-check', color: 'success' })
   } catch {
     // 非安全上下文（http 部署）没有 clipboard API，或不给权限。
     toast.add({
-      title: '复制失败',
-      description: '浏览器未授予剪贴板权限，请手动选择文本复制。',
+      title: t('result.copyFailed'),
+      description: t('result.copyFailedDescription'),
       icon: 'i-lucide-triangle-alert',
       color: 'error'
     })
@@ -64,7 +66,7 @@ async function copy(text: string, title: string) {
           rel="noopener noreferrer"
           class="rounded font-semibold text-highlighted hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
-          {{ item.title || '（无标题）' }}
+          {{ item.title || t('result.untitled') }}
         </a>
       </h3>
 
@@ -74,28 +76,28 @@ async function copy(text: string, title: string) {
 
       <div v-if="showContent && item.content" class="rounded-lg bg-muted px-3.5 py-3">
         <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
-          <p class="text-xs text-dimmed">网页正文（Markdown 原文，最多展示 20000 字符）</p>
+          <p class="text-xs text-dimmed">{{ t('result.contentLabel') }}</p>
           <UButton
             size="xs"
             color="neutral"
             variant="ghost"
             icon="i-lucide-copy"
-            label="复制正文"
-            @click="copy(item.content, '正文已复制')"
+            :label="t('result.copyContent')"
+            @click="copy(item.content, 'result.contentCopied')"
           />
         </div>
         <pre class="result-content max-h-80 overflow-auto font-sans text-xs leading-relaxed text-toned">{{ item.content.slice(0, 20000) }}</pre>
       </div>
 
       <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
-        <UTooltip text="相关度综合分 0～3，≥1.5 为优质结果">
+        <UTooltip :text="t('result.scoreTooltip')">
           <UBadge :color="scoreBadge" variant="subtle" size="sm" icon="i-lucide-sparkles">
-            {{ item.rerank_score.toFixed(1) }} 分
+            {{ t('result.score', { score: item.rerank_score.toFixed(1) }) }}
           </UBadge>
         </UTooltip>
 
         <UBadge :color="authorityBadge.color" variant="subtle" size="sm" icon="i-lucide-shield-check">
-          {{ authorityBadge.label }}
+          {{ t(authorityBadge.key, { level: authorityBadge.level }) }}
         </UBadge>
 
         <div class="ms-auto flex flex-wrap items-center gap-1">
@@ -109,12 +111,12 @@ async function copy(text: string, title: string) {
               variant="ghost"
               size="xs"
               icon="i-lucide-align-left"
-              label="长摘要"
+              :label="t('result.summaryOpen')"
             />
             <template #content>
               <div class="space-y-3">
                 <p class="text-xs text-dimmed">
-                  长摘要（{{ item.summary.length }} 字符，适合交给模型阅读）
+                  {{ t('result.summary', { count: item.summary.length }) }}
                 </p>
                 <p class="max-h-72 overflow-auto text-sm leading-relaxed text-toned">
                   {{ item.summary }}
@@ -122,8 +124,8 @@ async function copy(text: string, title: string) {
                 <UButton
                   size="xs"
                   icon="i-lucide-copy"
-                  label="复制摘要"
-                  @click="copy(item.summary, '长摘要已复制')"
+                  :label="t('result.copySummary')"
+                  @click="copy(item.summary, 'result.summaryCopied')"
                 />
               </div>
             </template>
@@ -135,7 +137,7 @@ async function copy(text: string, title: string) {
             variant="ghost"
             size="xs"
             :trailing-icon="showContent ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
-            :label="showContent ? '收起正文' : '正文'"
+            :label="showContent ? t('result.hideContent') : t('result.showContent')"
             :aria-expanded="showContent"
             @click="showContent = !showContent"
           />
@@ -144,8 +146,8 @@ async function copy(text: string, title: string) {
             variant="ghost"
             size="xs"
             icon="i-lucide-copy"
-            label="复制链接"
-            @click="copy(item.url, '链接已复制')"
+            :label="t('result.copyLink')"
+            @click="copy(item.url, 'result.linkCopied')"
           />
           <UButton
             :to="item.url"
@@ -155,7 +157,7 @@ async function copy(text: string, title: string) {
             variant="ghost"
             size="xs"
             icon="i-lucide-external-link"
-            label="打开"
+            :label="t('result.open')"
           />
         </div>
       </div>

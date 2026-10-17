@@ -5,28 +5,31 @@
  */
 const emit = defineEmits<{ use: [string] }>()
 
+const { t } = useI18n()
+
+/** 运算符本身与示例查询都是 API 语法，不翻译；只有解释文案走 i18n。 */
 const OPERATORS = [
-  { syntax: 'site:', meaning: '只在指定站点内搜索，多个站点用 OR 连接', example: 'vLLM 部署 site:github.com' },
-  { syntax: '-site:', meaning: '排除指定站点', example: 'DeepSeek -site:example.com' },
-  { syntax: '"…"', meaning: '精确匹配短语', example: 'DeepSeek "精确短语"' },
-  { syntax: '-…', meaning: '排除包含该关键词的网页', example: 'DeepSeek -广告' },
-  { syntax: '-"…"', meaning: '排除包含该短语的网页', example: 'DeepSeek -"release notes"' },
-  { syntax: 'lang:', meaning: '限定语言，多种语言用逗号分隔', example: '模型 发布 lang:zh,en' },
-  { syntax: 'after:', meaning: '只保留该日期之后发布的网页', example: 'DeepSeek 发布 after:2025-01-01' },
-  { syntax: 'before:', meaning: '只保留该日期之前发布的网页', example: 'DeepSeek 发布 before:2026' }
+  { syntax: 'site:', meaningKey: 'syntax.site', example: 'vLLM 部署 site:github.com' },
+  { syntax: '-site:', meaningKey: 'syntax.excludeSite', example: 'DeepSeek -site:example.com' },
+  { syntax: '"…"', meaningKey: 'syntax.phrase', example: 'DeepSeek "精确短语"' },
+  { syntax: '-…', meaningKey: 'syntax.excludeKeyword', example: 'DeepSeek -广告' },
+  { syntax: '-"…"', meaningKey: 'syntax.excludePhrase', example: 'DeepSeek -"release notes"' },
+  { syntax: 'lang:', meaningKey: 'syntax.lang', example: '模型 发布 lang:zh,en' },
+  { syntax: 'after:', meaningKey: 'syntax.after', example: 'DeepSeek 发布 after:2025-01-01' },
+  { syntax: 'before:', meaningKey: 'syntax.before', example: 'DeepSeek 发布 before:2026' }
 ]
 </script>
 
 <template>
   <section class="overflow-hidden rounded-xl border border-default">
     <h3 class="border-b border-default bg-muted px-4 py-2.5 text-xs font-medium text-toned">
-      支持的搜索语法
+      {{ t('syntax.listTitle') }}
     </h3>
     <dl class="divide-y divide-default">
       <div v-for="op in OPERATORS" :key="op.syntax" class="px-4 py-3">
         <dt class="flex items-baseline gap-2">
           <code class="font-mono text-sm text-primary">{{ op.syntax }}</code>
-          <span class="text-xs text-muted">{{ op.meaning }}</span>
+          <span class="text-xs text-muted">{{ t(op.meaningKey) }}</span>
         </dt>
         <dd class="mt-1">
           <button

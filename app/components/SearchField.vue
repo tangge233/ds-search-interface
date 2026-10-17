@@ -10,16 +10,19 @@ const props = withDefaults(
   defineProps<{
     size?: 'md' | 'lg' | 'xl'
     loading?: boolean
+    /** 留空时用当前语言的默认占位符 */
     placeholder?: string
     autofocus?: boolean
   }>(),
   {
     size: 'lg',
     loading: false,
-    placeholder: '输入关键词，或使用 site: lang: after: 等语法',
+    placeholder: '',
     autofocus: false
   }
 )
+
+const { t } = useI18n()
 
 const emit = defineEmits<{ submit: [] }>()
 
@@ -120,6 +123,7 @@ onMounted(() => {
 })
 
 const length = computed(() => countCharacters(query.value.trim()))
+const placeholderText = computed(() => props.placeholder || t('search.placeholder'))
 
 /** 已输入部分染成强调色，补全列表该有的样子。 */
 function highlight(item: SyntaxSuggestion) {
@@ -137,7 +141,7 @@ function highlight(item: SyntaxSuggestion) {
         v-model="query"
         :size="size"
         :loading="loading"
-        :placeholder="placeholder"
+        :placeholder="placeholderText"
         icon="i-lucide-search"
         class="w-full"
         :ui="{ base: 'text-base' }"
@@ -163,7 +167,7 @@ function highlight(item: SyntaxSuggestion) {
             variant="link"
             size="sm"
             icon="i-lucide-circle-x"
-            aria-label="清空搜索词"
+            :aria-label="t('search.clear')"
             @click="query = ''"
           />
         </template>
@@ -190,10 +194,10 @@ function highlight(item: SyntaxSuggestion) {
           <code class="shrink-0 font-mono text-sm">
             <span class="text-primary">{{ highlight(item).head }}</span><span class="text-toned">{{ highlight(item).tail }}</span>
           </code>
-          <span class="truncate text-xs text-muted">{{ item.description }}</span>
+          <span class="truncate text-xs text-muted">{{ t(item.descriptionKey, item.descriptionParams ?? {}) }}</span>
         </li>
         <li class="mt-1 border-t border-default px-3 pt-1.5 text-xs text-dimmed">
-          ↑↓ 选择 · Tab 插入 · Esc 关闭
+          {{ t('search.completionHint') }}
         </li>
       </ul>
     </div>
@@ -203,13 +207,13 @@ function highlight(item: SyntaxSuggestion) {
       :size="size"
       :loading="loading"
       :disabled="!query.trim()"
-      label="搜索"
+      :label="t('search.submit')"
       icon="i-lucide-arrow-right"
     />
   </form>
 
   <!-- 只在接近上限时提示，避免常驻一行噪声。 -->
   <p v-if="length > 96" class="mt-1.5 text-xs" :class="length > 128 ? 'text-error' : 'text-dimmed'">
-    {{ length }} / 128 个字符{{ length > 128 ? '，超出上限无法提交' : '' }}
+    {{ length > 128 ? t('search.lengthOver', { count: length }) : t('search.length', { count: length }) }}
   </p>
 </template>

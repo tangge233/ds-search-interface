@@ -42,15 +42,5 @@ export interface SearchResponse {
   results: SearchResultItem[]
 }
 
-/** 错误响应：OpenAI 兼容格式，param 恒为 null。 */
-export interface ApiErrorBody {
-  error?: {
-    message?: string
-    type?: string
-    param?: string | null
-    code?: string
-  }
-}
-
 /** 本地排序方式（在服务端返回的候选集上排序，不改变计费）。 */
 export type SearchSortKey = 'relevance' | 'authority' | 'date'

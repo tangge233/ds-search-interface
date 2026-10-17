@@ -38,14 +38,18 @@ export function scoreColor(score: number): 'success' | 'primary' | 'neutral' {
   return 'neutral'
 }
 
-/** 权威性 → 文案与语义色。-1 表示 API 未给出判断。 */
-export function authorityMeta(authority: number): {
-  label: string
+export interface AuthorityLabel {
+  /** 文案 key；`level` 由拆包方插值 */
+  key: 'result.authorityUnknown' | 'result.authority' | 'result.authorityExtreme'
+  level?: number
   color: 'success' | 'neutral'
-} {
-  if (authority < 0) return { label: '权威性未知', color: 'neutral' }
-  if (authority >= 3) return { label: `极权威 ${authority}/4`, color: 'success' }
-  return { label: `权威性 ${authority}/4`, color: 'neutral' }
+}
+
+/** 权威性 → 文案 key 与语义色。-1 表示 API 未给出判断。 */
+export function authorityMeta(authority: number): AuthorityLabel {
+  if (authority < 0) return { key: 'result.authorityUnknown', color: 'neutral' }
+  if (authority >= 3) return { key: 'result.authorityExtreme', level: authority, color: 'success' }
+  return { key: 'result.authority', level: authority, color: 'neutral' }
 }
 
 /**

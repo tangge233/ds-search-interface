@@ -5,6 +5,7 @@
  */
 const emit = defineEmits<{ openSettings: []; reset: [] }>()
 
+const { t } = useI18n()
 const { hasApiKey, isCustomBaseUrl } = useSearchSettings()
 </script>
 
@@ -19,7 +20,7 @@ const { hasApiKey, isCustomBaseUrl } = useSearchSettings()
         <span class="grid size-7 place-items-center rounded-md bg-primary text-inverted">
           <UIcon name="i-lucide-search" class="size-4" />
         </span>
-        <span class="hidden text-sm font-semibold text-highlighted sm:inline">DeepSeek 搜索交互工具</span>
+        <span class="hidden text-sm font-semibold text-highlighted sm:inline">{{ t('app.name') }}</span>
       </NuxtLink>
 
       <div class="ms-auto flex items-center gap-2">
@@ -29,14 +30,14 @@ const { hasApiKey, isCustomBaseUrl } = useSearchSettings()
           color="neutral"
           variant="subtle"
           icon="i-lucide-router"
-          label="自定义地址"
+          :label="t('header.customBaseUrl')"
         />
         <UButton
           :color="hasApiKey ? 'neutral' : 'primary'"
           :variant="hasApiKey ? 'ghost' : 'soft'"
           size="sm"
           icon="i-lucide-settings-2"
-          :label="hasApiKey ? '设置' : '设置 API Key'"
+          :label="hasApiKey ? t('header.settings') : t('header.settingsApiKey')"
           @click="emit('openSettings')"
         />
         <UColorModeButton />

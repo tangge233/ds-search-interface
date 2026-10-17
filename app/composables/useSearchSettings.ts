@@ -1,8 +1,8 @@
 import type { SearchSortKey } from '~/types/search'
 import { DEFAULT_BASE_URL } from '~/utils/endpoint'
-
-/** 结果区布局：居中单列 / 靠左单列 / 宽屏多列。 */
-export type ResultsLayout = 'center' | 'left' | 'columns'
+import type { AppLocale } from '~/utils/locales'
+import { APP_LOCALES, DEFAULT_LOCALE, detectLocale } from '~/utils/locales'
+import type { ResultsLayout } from '~/utils/search-presets'
 
 /** 持久化的搜索偏好（API Key 单独存放，便于一键清除）。 */
 export interface SearchPrefs {
@@ -14,6 +14,8 @@ export interface SearchPrefs {
   resultsLayout: ResultsLayout
   /** 关掉后不再写入本机搜索记录。 */
   keepHistory: boolean
+  /** 界面语言；i18n 的当前语言跟随它，而不是反过来。 */
+  locale: AppLocale
 }
 
 const KEYS = {
@@ -37,7 +39,8 @@ const QUERY_PREF_DEFAULTS: Pick<
 const PREF_DEFAULTS: SearchPrefs = {
   ...QUERY_PREF_DEFAULTS,
   resultsLayout: 'center',
-  keepHistory: true
+  keepHistory: true,
+  locale: DEFAULT_LOCALE
 }
 
 /**
@@ -57,7 +60,11 @@ function hydrate() {
   apiKey.value = readString(KEYS.apiKey)
   baseUrl.value = readString(KEYS.baseUrl) || DEFAULT_BASE_URL
   // 旧版本存下的 prefs 可能缺字段，用默认值补齐。
-  Object.assign(prefs, PREF_DEFAULTS, readJson<Partial<SearchPrefs>>(KEYS.prefs, {}))
+  const stored = readJson<Partial<SearchPrefs>>(KEYS.prefs, {})
+  Object.assign(prefs, PREF_DEFAULTS, stored)
+  // 没存过语言（新用户或旧版本）才按浏览器判断；存过但 code 未知时退回默认。
+  if (!stored.locale) prefs.locale = detectLocale()
+  else if (!APP_LOCALES.some(item => item.code === stored.locale)) prefs.locale = DEFAULT_LOCALE
 
   watch(apiKey, value => writeString(KEYS.apiKey, value))
   // 地址保持默认时不落盘，避免 localStorage 里留下「看起来配过」的痕迹。

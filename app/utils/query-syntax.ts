@@ -1,6 +1,7 @@
 /**
  * 查询语法补全。把「像 IDE 一样提示」的逻辑收敛成纯函数：
  * 组件只负责渲染与键盘事件，新增运算符时不必改 UI。
+ * 说明文案只带 i18n key 与插值参数，翻译在渲染时进行。
  */
 
 export interface SyntaxSuggestion {
@@ -8,7 +9,10 @@ export interface SyntaxSuggestion {
   insert: string
   /** 列表里展示的标记 */
   label: string
-  description: string
+  /** 说明文案的 i18n key */
+  descriptionKey: string
+  /** 说明文案的插值参数（例如年份） */
+  descriptionParams?: Record<string, unknown>
   /** 插入后光标相对 insert 起点的偏移；引号类会落在引号中间 */
   caretOffset?: number
 }
@@ -25,35 +29,42 @@ export interface SyntaxCompletion {
   items: SyntaxSuggestion[]
 }
 
-const LANGUAGES: [string, string][] = [
-  ['zh', '中文'],
-  ['en', '英语'],
-  ['ja', '日语'],
-  ['ko', '韩语'],
-  ['fr', '法语'],
-  ['de', '德语'],
-  ['es', '西班牙语'],
-  ['ru', '俄语']
-]
+interface ValueSuggestion {
+  value: string
+  descriptionKey: string
+  descriptionParams?: Record<string, unknown>
+}
+
+/** 语言候选；中文名放在 `syntax.languages.*`，值本身是 lang: 的参数。 */
+const LANGUAGES: ValueSuggestion[] = ['zh', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru'].map(value => ({
+  value,
+  descriptionKey: `syntax.languages.${value}`
+}))
 
 const CURRENT_YEAR = new Date().getFullYear()
 
 /** 运算符候选：prefix 决定「输入什么就提示什么」。 */
 const OPERATORS: (SyntaxSuggestion & { prefix: string })[] = [
-  { prefix: 'site:', insert: 'site:', label: 'site:', description: '限定只在这些站点内搜索' },
-  { prefix: '-site:', insert: '-site:', label: '-site:', description: '排除这些站点' },
-  { prefix: '"', insert: '""', label: '"…"', description: '精确匹配短语', caretOffset: 1 },
-  { prefix: '-"', insert: '-""', label: '-"…"', description: '排除包含该短语的网页', caretOffset: 2 },
-  { prefix: 'lang:', insert: 'lang:', label: 'lang:', description: '限定语言，如 lang:zh,en' },
-  { prefix: 'after:', insert: 'after:', label: 'after:', description: '只保留该日期之后发布的网页' },
-  { prefix: 'before:', insert: 'before:', label: 'before:', description: '只保留该日期之前发布的网页' }
+  { prefix: 'site:', insert: 'site:', label: 'site:', descriptionKey: 'syntax.site' },
+  { prefix: '-site:', insert: '-site:', label: '-site:', descriptionKey: 'syntax.excludeSite' },
+  { prefix: '"', insert: '""', label: '"…"', descriptionKey: 'syntax.phrase', caretOffset: 1 },
+  { prefix: '-"', insert: '-""', label: '-"…"', descriptionKey: 'syntax.excludePhrase', caretOffset: 2 },
+  { prefix: 'lang:', insert: 'lang:', label: 'lang:', descriptionKey: 'syntax.completion.lang' },
+  { prefix: 'after:', insert: 'after:', label: 'after:', descriptionKey: 'syntax.after' },
+  { prefix: 'before:', insert: 'before:', label: 'before:', descriptionKey: 'syntax.before' }
 ]
 
 /** 值候选：冒号后继续输入时按前缀过滤。没有候选表的运算符交给用户自由输入。 */
-const VALUE_TABLES: Record<string, { value: string; description: string }[]> = {
-  lang: LANGUAGES.map(([value, description]) => ({ value, description })),
-  after: [0, 1, 2].map(offset => ({ value: String(CURRENT_YEAR - offset), description: `${CURRENT_YEAR - offset} 年之后` })),
-  before: [0, 1, 2].map(offset => ({ value: String(CURRENT_YEAR - offset), description: `${CURRENT_YEAR - offset} 年之前` }))
+const VALUE_TABLES: Record<string, ValueSuggestion[]> = {
+  lang: LANGUAGES,
+  after: [0, 1, 2].map((offset) => {
+    const year = CURRENT_YEAR - offset
+    return { value: String(year), descriptionKey: 'syntax.completion.afterYear', descriptionParams: { year } }
+  }),
+  before: [0, 1, 2].map((offset) => {
+    const year = CURRENT_YEAR - offset
+    return { value: String(year), descriptionKey: 'syntax.completion.beforeYear', descriptionParams: { year } }
+  })
 }
 
 /** 取光标所在片段；光标停在空格上时返回空 token（表示可以开始下一个条件）。 */
@@ -96,7 +107,8 @@ export function completeQuery(query: string, caret: number): SyntaxCompletion {
     .map(entry => ({
       insert: `${key}:${entry.value}`,
       label: `${key}:${entry.value}`,
-      description: entry.description
+      descriptionKey: entry.descriptionKey,
+      descriptionParams: entry.descriptionParams
     }))
     .filter(item => item.insert !== token.text)
   return { token, items }

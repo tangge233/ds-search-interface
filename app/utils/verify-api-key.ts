@@ -1,11 +1,26 @@
+import { readErrorStatus, readServerMessage } from '~/utils/fetch-error'
 import { endpoint, MODELS_PATH } from '~/utils/endpoint'
 
 /** 校验结果：valid 表示 Key 可用，unknown 表示网络/代理等无法判定。 */
 export type ApiKeyVerdict = 'valid' | 'invalid' | 'unknown'
 
+/** 本地兜底说明的 i18n key；有服务端原文时优先展示原文。 */
+export type VerifyDetailKey =
+  | 'verify.valid'
+  | 'verify.invalidKey'
+  | 'verify.insufficient'
+  | 'verify.httpError'
+  | 'verify.network'
+  | 'verify.enterKeyFirst'
+  | 'verify.failed'
+
 export interface ApiKeyCheck {
   verdict: ApiKeyVerdict
-  detail: string
+  detailKey: VerifyDetailKey
+  /** HTTP 状态码，`verify.httpError` 需要它插值。 */
+  status?: number
+  /** 服务端返回的原文，保留它本来的语言。 */
+  serverMessage?: string
 }
 
 /**
@@ -18,19 +33,14 @@ export async function verifyApiKey(key: string, baseUrl: string): Promise<ApiKey
     await $fetch(endpoint(baseUrl, MODELS_PATH), {
       headers: { Authorization: `Bearer ${key.trim()}` }
     })
-    return { verdict: 'valid', detail: '凭据有效，可以开始搜索。' }
+    return { verdict: 'valid', detailKey: 'verify.valid' }
   } catch (error) {
-    const status = (error as { status?: number } | null)?.status
-    const message = (error as { data?: { error?: { message?: string } } } | null)?.data?.error?.message
+    const status = readErrorStatus(error)
+    const serverMessage = readServerMessage(error)
 
-    if (status === 401) return { verdict: 'invalid', detail: message || 'API Key 无效或已被删除。' }
-    if (status === 402) return { verdict: 'invalid', detail: message || '账号余额不足，充值后即可搜索。' }
-    if (typeof status === 'number') {
-      return { verdict: 'unknown', detail: `接口返回 HTTP ${status}${message ? `：${message}` : ''}，无法确认 Key 状态。` }
-    }
-    return {
-      verdict: 'unknown',
-      detail: '请求没能发出（离线、代理或跨域被拒），可以直接尝试搜索。'
-    }
+    if (status === 401) return { verdict: 'invalid', detailKey: 'verify.invalidKey', status, serverMessage }
+    if (status === 402) return { verdict: 'invalid', detailKey: 'verify.insufficient', status, serverMessage }
+    if (status !== null) return { verdict: 'unknown', detailKey: 'verify.httpError', status, serverMessage }
+    return { verdict: 'unknown', detailKey: 'verify.network' }
   }
 }

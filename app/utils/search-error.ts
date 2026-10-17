@@ -1,79 +1,56 @@
-import type { ApiErrorBody } from '~/types/search'
+import { readErrorStatus, readServerMessage } from '~/utils/fetch-error'
+
+/** 契约错误的原因码：具体文案由 i18n 的 `errors.contract.*` 决定。 */
+export type ContractErrorReason = 'missingResults' | 'resultsNotArray' | 'itemsMissingUrl'
 
 /** 响应结构不符合接口契约时抛出（例如自建网关返回了别的 JSON）。 */
 export class SearchContractError extends Error {
-  constructor(message: string) {
-    super(message)
+  readonly reason: ContractErrorReason
+
+  constructor(reason: ContractErrorReason) {
+    super(reason)
     this.name = 'SearchContractError'
+    this.reason = reason
   }
 }
 
-/** 一次失败搜索的可读解释：状态码 + 四段式说明，直接投喂 UAlert。 */
+/**
+ * 一次失败搜索的可读解释：状态码 + 四段式说明，直接投喂 UAlert。
+ * 标题与建议保存的是 i18n key 而不是成品文案——语言可以在错误展示期间切换，
+ * 成品文案做不到这一点；服务端原文则原样透传，它本来是哪种语言就是哪种。
+ */
 export interface SearchFailure {
   /** HTTP 状态码；网络层失败（离线 / DNS / CORS）时为 null。 */
   status: number | null
-  title: string
-  /** 服务端返回的原文，或本地兜底说明。 */
-  detail: string
+  titleKey: string
+  titleParams?: Record<string, unknown>
+  /** 服务端返回的原文，或浏览器给出的错误信息。 */
+  serverMessage?: string
+  /** 没有原文时展示的本地兜底说明。 */
+  detailKey?: string
   /** 可操作的下一步。 */
-  hint: string
+  hintKey: string
+  hintParams?: Record<string, unknown>
   retryable: boolean
   /** 缺少 API Key 时置位，用于自动唤起设置面板。 */
   needsApiKey?: boolean
 }
 
-/** 官方错误码表：https://api-docs.deepseek.com/zh-cn/guides/search#错误 */
-const STATUS_GUIDE: Record<number, { title: string; hint: string; retryable: boolean }> = {
-  400: {
-    title: '请求不合法',
-    hint: '检查搜索词是否为 1～128 字符、搜索语法是否符合文档写法。',
-    retryable: false
-  },
-  401: {
-    title: 'API Key 无效',
-    hint: '在设置中重新填写 API Key，确认它属于当前账号且未被删除。',
-    retryable: false
-  },
-  402: {
-    title: '账号余额不足',
-    hint: 'Search 按成功请求计费（5 元 / 1000 次），充值后可直接重试。',
-    retryable: false
-  },
-  403: {
-    title: '请求被拒绝',
-    hint: '接口安全策略拦下了本次请求，换个搜索词再试。',
-    retryable: false
-  },
-  404: {
-    title: '没有可用内容',
-    hint: '目标资源不可用，调整搜索词后重试。',
-    retryable: false
-  },
-  408: {
-    title: '请求超时',
-    hint: '等待几秒后重试。',
-    retryable: true
-  },
-  413: {
-    title: '请求体过大',
-    hint: '精简搜索词与参数后重试。',
-    retryable: false
-  },
-  429: {
-    title: '请求过于频繁',
-    hint: 'Search 限速为每账号 5 QPS，稍等片刻再搜索。',
-    retryable: true
-  },
-  500: {
-    title: '服务端内部错误',
-    hint: '等待后重试；持续失败说明服务端异常。',
-    retryable: true
-  },
-  504: {
-    title: '下游请求超时',
-    hint: '等待后重试。',
-    retryable: true
-  }
+/**
+ * 有专门文案的状态码：https://api-docs.deepseek.com/zh-cn/guides/search#错误
+ * 标题与建议的文案放在 `errors.status.<code>.*`，这里只记录是否值得重试。
+ */
+const STATUS_GUIDE: Record<number, { retryable: boolean }> = {
+  400: { retryable: false },
+  401: { retryable: false },
+  402: { retryable: false },
+  403: { retryable: false },
+  404: { retryable: false },
+  408: { retryable: true },
+  413: { retryable: false },
+  429: { retryable: true },
+  500: { retryable: true },
+  504: { retryable: true }
 }
 
 /**
@@ -86,43 +63,45 @@ export function describeSearchError(error: unknown): SearchFailure {
   if (error instanceof SearchContractError) {
     return {
       status: null,
-      title: '接口响应格式异常',
-      detail: error.message,
-      hint: '确认 API 地址指向 DeepSeek Search 兼容接口，或让自建网关原样转发 results 字段。',
+      titleKey: 'errors.contract.title',
+      detailKey: `errors.contract.${error.reason}`,
+      hintKey: 'errors.contract.hint',
       retryable: false
     }
   }
 
-  const rawStatus = (error as { status?: unknown } | null)?.status
-  const status = typeof rawStatus === 'number' ? rawStatus : null
-  const serverMessage = (error as { data?: ApiErrorBody } | null)?.data?.error?.message
-  const guide = status === null ? undefined : STATUS_GUIDE[status]
-
-  if (guide) {
-    return {
-      status,
-      title: guide.title,
-      detail: serverMessage || '接口未返回更详细的说明。',
-      hint: guide.hint,
-      retryable: guide.retryable
-    }
-  }
+  const status = readErrorStatus(error)
+  const serverMessage = readServerMessage(error)
 
   if (status === null) {
     return {
       status: null,
-      title: '无法连接到 DeepSeek API',
-      detail: error instanceof Error ? error.message : String(error),
-      hint: '确认网络可用；若经过代理或自定义 API 地址，该地址需允许浏览器跨域访问（CORS）。',
+      titleKey: 'errors.networkTitle',
+      serverMessage: error instanceof Error ? error.message : String(error),
+      hintKey: 'errors.networkHint',
       retryable: true
+    }
+  }
+
+  const guide = STATUS_GUIDE[status]
+  if (guide) {
+    return {
+      status,
+      titleKey: `errors.status.${status}.title`,
+      serverMessage,
+      detailKey: serverMessage ? undefined : 'errors.statusDetailMissing',
+      hintKey: `errors.status.${status}.hint`,
+      retryable: guide.retryable
     }
   }
 
   return {
     status,
-    title: `请求失败（HTTP ${status}）`,
-    detail: serverMessage || '接口返回了未预期的状态码。',
-    hint: '稍后重试；若持续失败，可在设置中更换 API 地址。',
+    titleKey: 'errors.httpTitle',
+    titleParams: { status },
+    serverMessage,
+    detailKey: serverMessage ? undefined : 'errors.unexpectedStatusDetail',
+    hintKey: 'errors.unknownStatusHint',
     retryable: status >= 500
   }
 }

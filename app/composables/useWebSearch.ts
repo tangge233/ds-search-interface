@@ -23,11 +23,6 @@ export function useWebSearch() {
   const visibleResults = computed(() => applyViewOptions(results.value, prefs))
   const hiddenCount = computed(() => results.value.length - visibleResults.value.length)
 
-  function failWith(partial: Omit<SearchFailure, 'status' | 'retryable'> & { status?: number | null; retryable?: boolean }) {
-    failure.value = { status: partial.status ?? null, retryable: partial.retryable ?? false, ...partial }
-    status.value = 'error'
-  }
-
   async function run(query: string, oriQuestion = '') {
     // 先取消在途请求：无论这次提交本身是否合法，旧请求都不该再有机会写状态。
     controller?.abort()
@@ -40,17 +35,27 @@ export function useWebSearch() {
       localization: prefs.localization
     })
     if (invalid) {
-      failWith({ title: '参数不符合接口要求', detail: invalid, hint: '修正后即可提交。' })
+      failure.value = {
+        status: null,
+        titleKey: 'errors.invalidInputTitle',
+        detailKey: invalid,
+        hintKey: 'errors.invalidInputHint',
+        retryable: false
+      }
+      status.value = 'error'
       return
     }
 
     if (!hasApiKey.value) {
-      failWith({
-        title: '尚未配置 API Key',
-        detail: 'Search 接口使用 Bearer 鉴权，需要你自己的 DeepSeek API Key。',
-        hint: '填入 API Key 后立刻可以搜索，它只保存在当前浏览器。',
+      failure.value = {
+        status: null,
+        titleKey: 'errors.missingKeyTitle',
+        detailKey: 'errors.missingKeyDetail',
+        hintKey: 'errors.missingKeyHint',
+        retryable: false,
         needsApiKey: true
-      })
+      }
+      status.value = 'error'
       return
     }
 

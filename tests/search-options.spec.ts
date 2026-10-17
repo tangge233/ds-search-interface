@@ -3,19 +3,19 @@ import { applyViewOptions, validateSearchInput } from '~/utils/search-options'
 
 describe('validateSearchInput', () => {
   it('拒绝空白搜索词', () => {
-    expect(validateSearchInput({ query: '   ' })).toBe('请输入搜索词。')
+    expect(validateSearchInput({ query: '   ' })).toBe('errors.validation.emptyQuery')
   })
 
   it('按码点而非 UTF-16 单元计算长度', () => {
     expect(validateSearchInput({ query: 'a'.repeat(128) })).toBeNull()
-    expect(validateSearchInput({ query: 'a'.repeat(129) })).toContain('最多 128')
+    expect(validateSearchInput({ query: 'a'.repeat(129) })).toBe('errors.validation.queryTooLong')
     // 每个 emoji 是一个码点，但占两个 UTF-16 单元。
     expect(validateSearchInput({ query: '😀'.repeat(128) })).toBeNull()
-    expect(validateSearchInput({ query: '😀'.repeat(129) })).toContain('最多 128')
+    expect(validateSearchInput({ query: '😀'.repeat(129) })).toBe('errors.validation.queryTooLong')
   })
 
   it('限制原始问题长度', () => {
-    expect(validateSearchInput({ query: 'a', oriQuestion: 'b'.repeat(129) })).toContain('128')
+    expect(validateSearchInput({ query: 'a', oriQuestion: 'b'.repeat(129) })).toBe('errors.validation.oriQuestionTooLong')
     expect(validateSearchInput({ query: 'a', oriQuestion: 'b'.repeat(128) })).toBeNull()
   })
 
@@ -27,7 +27,7 @@ describe('validateSearchInput', () => {
 
   it('拒绝越界段、前导零与畸形 IPv6', () => {
     for (const localization of ['999.999.999.999', '256.0.0.1', '01.2.3.4', '1.2.3', '1.2.3.4.5', '::::', '12345::1', '2001:db8:::1']) {
-      expect(validateSearchInput({ query: 'a', localization })).toContain('本地化 IP')
+      expect(validateSearchInput({ query: 'a', localization })).toBe('errors.validation.localization')
     }
   })
 

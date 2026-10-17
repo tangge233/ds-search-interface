@@ -15,6 +15,7 @@ const props = defineProps<{ currentQuery: string }>()
 
 const emit = defineEmits<{ apply: [string] }>()
 
+const { t } = useI18n()
 const { prefs } = useSearchSettings()
 const oriQuestion = defineModel<string>('oriQuestion', { default: '' })
 
@@ -39,14 +40,14 @@ function clearFields() {
 <template>
   <div class="flex max-h-[70vh] flex-col">
     <header class="flex shrink-0 flex-wrap items-center gap-2 border-b border-default px-4 py-3">
-      <h2 class="text-sm font-medium text-highlighted">高级语法生成器</h2>
+      <h2 class="text-sm font-medium text-highlighted">{{ t('advanced.title') }}</h2>
       <div class="ms-auto flex flex-wrap items-center gap-1">
         <UButton
           size="xs"
           color="neutral"
           variant="ghost"
           icon="i-lucide-text-search"
-          label="从搜索框解析"
+          :label="t('advanced.parse')"
           @click="fillFromQuery"
         />
         <UButton
@@ -54,7 +55,7 @@ function clearFields() {
           color="neutral"
           variant="ghost"
           icon="i-lucide-eraser"
-          label="清空条件"
+          :label="t('advanced.clearFields')"
           @click="clearFields"
         />
         <UButton
@@ -62,7 +63,7 @@ function clearFields() {
           color="neutral"
           variant="ghost"
           icon="i-lucide-book-open"
-          label="语法速查"
+          :label="t('advanced.syntaxList')"
           :aria-expanded="showSyntax"
           @click="showSyntax = !showSyntax"
         />
@@ -71,39 +72,39 @@ function clearFields() {
 
     <div class="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-4 pe-3 [scrollbar-gutter:stable]">
       <div class="grid gap-3 sm:grid-cols-2">
-        <UFormField label="全部关键词" class="sm:col-span-2">
-          <UInput v-model="fields.keywords" placeholder="空格分隔，结果需全部包含" class="w-full" />
+        <UFormField :label="t('advanced.keywords')" class="sm:col-span-2">
+          <UInput v-model="fields.keywords" :placeholder="t('advanced.keywordsPlaceholder')" class="w-full" />
         </UFormField>
-        <UFormField label="精确短语">
-          <UInput v-model="fields.phrase" placeholder="整句匹配" class="w-full" />
+        <UFormField :label="t('advanced.phrase')">
+          <UInput v-model="fields.phrase" :placeholder="t('advanced.phrasePlaceholder')" class="w-full" />
         </UFormField>
-        <UFormField label="排除关键词">
-          <UInput v-model="fields.excludeKeywords" placeholder="广告 推广" class="w-full" />
+        <UFormField :label="t('advanced.excludeKeywords')">
+          <UInput v-model="fields.excludeKeywords" :placeholder="t('advanced.excludeKeywordsPlaceholder')" class="w-full" />
         </UFormField>
-        <UFormField label="排除短语">
-          <UInput v-model="fields.excludePhrase" placeholder="release notes" class="w-full" />
+        <UFormField :label="t('advanced.excludePhrase')">
+          <UInput v-model="fields.excludePhrase" :placeholder="t('advanced.excludePhrasePlaceholder')" class="w-full" />
         </UFormField>
-        <UFormField label="限定站点" help="多个站点自动用 OR 连接">
-          <UInput v-model="fields.site" placeholder="github.com huggingface.co" class="w-full" />
+        <UFormField :label="t('advanced.site')" :help="t('advanced.siteHelp')">
+          <UInput v-model="fields.site" :placeholder="t('advanced.sitePlaceholder')" class="w-full" />
         </UFormField>
-        <UFormField label="排除站点">
-          <UInput v-model="fields.excludeSite" placeholder="example.com" class="w-full" />
+        <UFormField :label="t('advanced.excludeSite')">
+          <UInput v-model="fields.excludeSite" :placeholder="t('advanced.excludeSitePlaceholder')" class="w-full" />
         </UFormField>
-        <UFormField label="语言" help="逗号分隔，生成 lang:zh,en">
-          <UInput v-model="fields.lang" placeholder="zh,en" class="w-full" />
+        <UFormField :label="t('advanced.lang')" :help="t('advanced.langHelp')">
+          <UInput v-model="fields.lang" :placeholder="t('advanced.langPlaceholder')" class="w-full" />
         </UFormField>
-        <UFormField label="起始时间" help="生成 after:">
-          <UInput v-model="fields.after" placeholder="2025 或 2025-01-01" class="w-full" />
+        <UFormField :label="t('advanced.after')" :help="t('advanced.afterHelp')">
+          <UInput v-model="fields.after" :placeholder="t('advanced.afterPlaceholder')" class="w-full" />
         </UFormField>
-        <UFormField label="结束时间" help="生成 before:">
-          <UInput v-model="fields.before" placeholder="2026" class="w-full" />
+        <UFormField :label="t('advanced.before')" :help="t('advanced.beforeHelp')">
+          <UInput v-model="fields.before" :placeholder="t('advanced.beforePlaceholder')" class="w-full" />
         </UFormField>
       </div>
 
       <div class="rounded-lg bg-muted px-3 py-2">
-        <p class="text-xs text-dimmed">生成的搜索词</p>
+        <p class="text-xs text-dimmed">{{ t('advanced.previewLabel') }}</p>
         <p class="mt-1 break-all font-mono text-sm text-toned">
-          {{ preview || '（还没有填写任何条件）' }}
+          {{ preview || t('advanced.previewEmpty') }}
         </p>
       </div>
 
@@ -111,15 +112,15 @@ function clearFields() {
 
       <div class="grid gap-3 border-t border-default pt-4 sm:grid-cols-2">
         <UFormField
-          label="原始问题"
-          hint="可选"
-          help="≤128 字符，帮助服务端理解搜索意图"
+          :label="t('advanced.oriQuestion')"
+          :hint="t('advanced.optional')"
+          :help="t('advanced.oriQuestionHelp')"
           class="sm:col-span-2"
         >
-          <UInput v-model="oriQuestion" placeholder="例如：怎么在生产环境部署 vLLM？" class="w-full" />
+          <UInput v-model="oriQuestion" :placeholder="t('advanced.oriQuestionPlaceholder')" class="w-full" />
         </UFormField>
-        <UFormField label="本地化 IP" hint="可选" help="让结果偏向该地区，留空表示不指定">
-          <UInput v-model="prefs.localization" placeholder="203.0.113.10" class="w-full" />
+        <UFormField :label="t('advanced.localization')" :hint="t('advanced.optional')" :help="t('advanced.localizationHelp')">
+          <UInput v-model="prefs.localization" :placeholder="t('advanced.localizationPlaceholder')" class="w-full" />
         </UFormField>
       </div>
     </div>
@@ -128,11 +129,11 @@ function clearFields() {
       <UButton
         size="sm"
         icon="i-lucide-corner-down-right"
-        label="写入并搜索"
+        :label="t('advanced.apply')"
         :disabled="!preview"
         @click="apply"
       />
-      <span class="text-xs text-dimmed">写入后会替换搜索框内容并立即搜索。</span>
+      <span class="text-xs text-dimmed">{{ t('advanced.applyHint') }}</span>
     </footer>
   </div>
 </template>

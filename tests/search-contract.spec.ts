@@ -15,6 +15,16 @@ const validItem = {
   authority: 3
 }
 
+/** 取出契约错误的原因码；不是契约错误则返回 undefined。 */
+function reasonOf(payload: unknown): string | undefined {
+  try {
+    normalizeResults(payload)
+  } catch (error) {
+    if (error instanceof SearchContractError) return error.reason
+  }
+  return undefined
+}
+
 describe('normalizeResults', () => {
   it('透出文档里声明的字段', () => {
     expect(normalizeResults({ results: [validItem] })).toEqual([validItem])
@@ -66,5 +76,11 @@ describe('normalizeResults', () => {
 
   it('有条目但一条都留不下时抛契约错误，而不是伪装成空结果', () => {
     expect(() => normalizeResults({ results: [{ title: 'a' }, { title: 'b' }] })).toThrow(SearchContractError)
+  })
+
+  it('契约错误带上可翻译的原因码', () => {
+    expect(reasonOf({ results: 'nope' })).toBe('resultsNotArray')
+    expect(reasonOf({ results: [{ title: 'a' }] })).toBe('itemsMissingUrl')
+    expect(reasonOf({})).toBe('missingResults')
   })
 })
