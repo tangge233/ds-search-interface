@@ -291,13 +291,13 @@ function onHistoryToggle(enabled: boolean) {
               <h3 class="text-sm font-medium text-highlighted">{{ t('settings.sectionAbout') }}</h3>
               <p class="mt-1 text-xs text-dimmed">
                 {{ t('settings.aboutIntro') }}
-                <a
-                  href="https://api-docs.deepseek.com/zh-cn/api/search"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="ms-1 text-primary underline underline-offset-4"
-                >{{ t('settings.aboutApiDocs') }}</a>
               </p>
+              <a
+                href="https://api-docs.deepseek.com/zh-cn/api/search"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-1 inline-block text-xs text-primary underline underline-offset-4"
+              >{{ t('settings.aboutApiDocs') }}</a>
             </div>
 
             <!-- 源码与许可：MIT 允许商用与再发布，但要求保留版权与许可声明，这里如实写明。 -->

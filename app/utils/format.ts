@@ -40,16 +40,15 @@ export function scoreColor(score: number): 'success' | 'primary' | 'neutral' {
 
 export interface AuthorityLabel {
   /** 文案 key；`level` 由拆包方插值 */
-  key: 'result.authorityUnknown' | 'result.authority' | 'result.authorityExtreme'
+  key: 'result.authorityUnknown' | 'result.authority'
   level?: number
   color: 'success' | 'neutral'
 }
 
-/** 权威性 → 文案 key 与语义色。-1 表示 API 未给出判断。 */
+/** 权威性 → 文案 key 与语义色。-1 表示 API 未给出判断；数值统一写作 x/4，颜色承担评价。 */
 export function authorityMeta(authority: number): AuthorityLabel {
   if (authority < 0) return { key: 'result.authorityUnknown', color: 'neutral' }
-  if (authority >= 3) return { key: 'result.authorityExtreme', level: authority, color: 'success' }
-  return { key: 'result.authority', level: authority, color: 'neutral' }
+  return { key: 'result.authority', level: authority, color: authority >= 3 ? 'success' : 'neutral' }
 }
 
 /**
