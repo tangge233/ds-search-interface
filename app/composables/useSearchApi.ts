@@ -1,4 +1,6 @@
 import type { SearchRequest, SearchResponse } from '~/types/search'
+import { endpoint, SEARCH_PATH } from '~/utils/endpoint'
+import { normalizeResults } from '~/utils/search-contract'
 
 /**
  * DeepSeek Search API 的薄封装：浏览器直连，无服务端代理。
@@ -9,7 +11,7 @@ export function useSearchApi() {
   const { apiKey, baseUrl } = useSearchSettings()
 
   async function search(body: SearchRequest, signal?: AbortSignal): Promise<SearchResponse> {
-    const payload = await $fetch<SearchResponse>(`${baseUrl.value}${SEARCH_PATH}`, {
+    const payload = await $fetch<unknown>(endpoint(baseUrl.value, SEARCH_PATH), {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${apiKey.value.trim()}`,
@@ -19,11 +21,9 @@ export function useSearchApi() {
       signal
     })
 
-    // 防御性契约检查：字段缺失说明响应不符合文档，交给错误映射兜底而不是静默渲染空列表。
-    if (!payload || !Array.isArray(payload.results)) {
-      throw new SearchContractError('响应缺少 results 字段，可能不是 Search 接口返回的数据。')
-    }
-    return payload
+    // 契约校验放在这里而不是模板：字段缺失/类型不符要变成可读错误，
+    // 不能让结果卡片在渲染期抛错。
+    return { results: normalizeResults(payload) }
   }
 
   return { search }

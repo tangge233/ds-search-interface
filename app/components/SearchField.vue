@@ -26,6 +26,8 @@ const emit = defineEmits<{ submit: [] }>()
 const query = defineModel<string>({ required: true })
 
 const root = useTemplateRef<{ inputRef?: HTMLInputElement; $el?: HTMLElement } | null>('root')
+/** 补全面板的 id 前缀：listbox 与选项都要被 input 用 aria-controls / aria-activedescendant 指到。 */
+const uid = useId()
 const caret = ref(0)
 const activeIndex = ref(0)
 const focused = ref(false)
@@ -139,8 +141,11 @@ function highlight(item: SyntaxSuggestion) {
         icon="i-lucide-search"
         class="w-full"
         :ui="{ base: 'text-base' }"
+        role="combobox"
         :aria-invalid="length > 128 || undefined"
         :aria-expanded="open"
+        :aria-controls="open ? `${uid}-syntax` : undefined"
+        :aria-activedescendant="open ? `${uid}-syntax-${activeIndex}` : undefined"
         aria-autocomplete="list"
         autocomplete="off"
         autocapitalize="off"
@@ -167,11 +172,13 @@ function highlight(item: SyntaxSuggestion) {
       <!-- 语法提示面板。mousedown.prevent 保证点击候选不会先触发失焦。 -->
       <ul
         v-if="open"
+        :id="`${uid}-syntax`"
         class="absolute inset-x-0 top-full z-50 mt-1.5 overflow-hidden rounded-lg border border-default bg-elevated py-1 shadow-lg"
         role="listbox"
       >
         <li
           v-for="(item, index) in completion.items"
+          :id="`${uid}-syntax-${index}`"
           :key="item.insert"
           role="option"
           :aria-selected="index === activeIndex"

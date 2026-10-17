@@ -115,6 +115,7 @@ pnpm dev        # http://localhost:3000
 - **数据流向**：本工具不经过任何自建服务端。除按你的配置把 API Key 与搜索词发送给你填写的 API 地址之外，不会把数据发往别处；配置与搜索记录只存在本机 `localStorage`。
 - **Key 安全**：Key 以明文存放在 `localStorage`，同源的脚本都能读到。请勿在仓库或代码里写死 Key；公共电脑上用完后点「清除本机 Key」。
 - **结果使用**：搜索内容由 DeepSeek Search API 返回，本工具只负责展示，不对内容准确性负责；API 费用与使用方式由使用者自行判断和承担。
+- **界面语言**：界面目前只有简体中文，没有语言切换；搜索语法（`site:`、`lang:` 等）本身与界面语言无关。
 
 ## 部署
 
@@ -141,6 +142,7 @@ export default defineNuxtConfig({
 | `pnpm dev` | 启动开发服务器 |
 | `pnpm lint` | ESLint 检查 |
 | `pnpm typecheck` | 类型检查（vue-tsc） |
+| `pnpm test` | 单元测试（vitest，覆盖查询语法、参数校验、响应归一化等纯函数） |
 | `pnpm build` | 构建为 Node 运行时产物（`.output/server`） |
 | `pnpm generate` | 构建为静态产物（`.output/public`） |
 | `pnpm preview` | 预览 `pnpm build` 的产物 |
@@ -148,7 +150,7 @@ export default defineNuxtConfig({
 提交前请先跑通：
 
 ```bash
-pnpm lint && pnpm typecheck
+pnpm lint && pnpm typecheck && pnpm test
 ```
 
 ### 约定

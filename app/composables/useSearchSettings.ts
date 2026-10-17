@@ -1,7 +1,5 @@
 import type { SearchSortKey } from '~/types/search'
-
-export const DEFAULT_BASE_URL = 'https://api.deepseek.com'
-export const SEARCH_PATH = '/v1/tools/search'
+import { DEFAULT_BASE_URL } from '~/utils/endpoint'
 
 /** 结果区布局：居中单列 / 靠左单列 / 宽屏多列。 */
 export type ResultsLayout = 'center' | 'left' | 'columns'

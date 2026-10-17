@@ -1,3 +1,5 @@
+import { endpoint, MODELS_PATH } from '~/utils/endpoint'
+
 /** 校验结果：valid 表示 Key 可用，unknown 表示网络/代理等无法判定。 */
 export type ApiKeyVerdict = 'valid' | 'invalid' | 'unknown'
 
@@ -13,7 +15,7 @@ export interface ApiKeyCheck {
  */
 export async function verifyApiKey(key: string, baseUrl: string): Promise<ApiKeyCheck> {
   try {
-    await $fetch(`${baseUrl}/models`, {
+    await $fetch(endpoint(baseUrl, MODELS_PATH), {
       headers: { Authorization: `Bearer ${key.trim()}` }
     })
     return { verdict: 'valid', detail: '凭据有效，可以开始搜索。' }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DEFAULT_BASE_URL } from '~/composables/useSearchSettings'
+import { DEFAULT_BASE_URL } from '~/utils/endpoint'
 import { COUNT_OPTIONS, LAYOUT_OPTIONS, SORT_OPTIONS } from '~/utils/search-presets'
 import type { ApiKeyCheck } from '~/utils/verify-api-key'
 
@@ -66,6 +66,12 @@ async function verify() {
   verifying.value = true
   try {
     check.value = await verifyApiKey(draftKey.value, draftBase.value)
+  } catch (error) {
+    // verifyApiKey 自己已经处理了已知错误；这里只兜住未预期异常，避免按钮卡在 loading。
+    check.value = {
+      verdict: 'unknown',
+      detail: error instanceof Error ? error.message : String(error)
+    }
   } finally {
     verifying.value = false
   }

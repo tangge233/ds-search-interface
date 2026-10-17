@@ -84,6 +84,9 @@ function resetAll() {
 function onKeydown(event: KeyboardEvent) {
   if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return
 
+  // 模态打开时焦点应留在弹窗内：此时抢焦点会把用户从设置里拽回背后的搜索框。
+  if (document.querySelector('[role="dialog"], [role="alertdialog"]')) return
+
   const target = event.target as HTMLElement | null
   // 正在别的输入控件里打字时不要抢焦点。
   if (target?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target?.tagName ?? '')) return
@@ -308,7 +311,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
         <div v-else :class="[resultsClass, 'mt-1']">
           <SearchResultCard
             v-for="(item, index) in visibleResults"
-            :key="item.url"
+            :key="`${index}-${item.url}`"
             :class="cardClass"
             :item="item"
             :rank="index + 1"
