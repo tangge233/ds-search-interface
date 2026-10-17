@@ -1,0 +1,5 @@
+name = "ds-search-interface"
+
+[assets]
+directory = "./.output/public"
+not_found_handling = "single-page-application"
