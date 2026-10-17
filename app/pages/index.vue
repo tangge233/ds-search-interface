@@ -9,7 +9,7 @@ const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 
-const { prefs, hasApiKey } = useSearchSettings()
+const { prefs, queryOptions, hasApiKey } = useSearchSettings()
 const { items: history, clearAll: clearHistory } = useSearchHistory()
 const {
   status,
@@ -275,12 +275,12 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
           />
           <div class="flex justify-center">
             <UButton
-              v-if="prefs.onlyQuality && results.length"
+              v-if="queryOptions.onlyQuality && results.length"
               :label="t('results.disableQualityFilter')"
               color="neutral"
               variant="outline"
               size="sm"
-              @click="prefs.onlyQuality = false"
+              @click="queryOptions.onlyQuality = false"
             />
             <UButton
               v-else

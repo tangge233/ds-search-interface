@@ -1,10 +1,10 @@
 {
   "app": {
-    "name": "DeepSeek 搜索交互工具"
+    "name": "DeepSeek 网页搜索交互工具"
   },
   "meta": {
-    "title": "DeepSeek 搜索交互工具",
-    "description": "DeepSeek 搜索交互工具：调用 DeepSeek Search API 的纯前端网页搜索，API Key 只保存在本地浏览器。"
+    "title": "DeepSeek 网页搜索交互工具",
+    "description": "使用 DeepSeek Search API 的网页搜索实现，非 DeepSeek 官方项目"
   },
   "common": {
     "retry": "重试",
@@ -20,16 +20,16 @@
     "helpDescription": "输入 site:、lang:、after: 等运算符时，光标处会列出候选：↑↓ 选择、Tab 插入、Esc 关闭。点下面的示例可直接填入并搜索，按 / 可聚焦搜索框。"
   },
   "home": {
-    "description": "实时网页搜索，结果附相关度与权威性评分；API Key 只保存在本机浏览器。",
-    "syntaxHint": "支持 site:、lang:、after: 等语法，聚焦搜索框即出现候选；完整用法见右上角「使用提示」。",
-    "apiKeyAlertTitle": "填入 DeepSeek API Key 后开始搜索",
-    "apiKeyAlertDescription": "请求由浏览器直连 api.deepseek.com，Key 不离开本机。",
+    "description": "利用 DeepSeek API 提供的网页搜索能力，搜索结果附相关度与权威性评分。同时，你的所有数据和搜素请求仅通过你的设备发起。",
+    "syntaxHint": "支持高级搜索语法提示，用法说明请见右上角「使用提示」。",
+    "apiKeyAlertTitle": "需要填入 API Key",
+    "apiKeyAlertDescription": "请求通过你的设备直接访问 DeepSeek API。您需要先填入 API Key 后才能使用网页搜索服务。",
     "goSettings": "去设置",
     "historyTitle": "最近搜索",
     "historyClear": "清空记录"
   },
   "search": {
-    "placeholder": "输入关键词，支持 site: lang: after: 等语法",
+    "placeholder": "输入关键词……",
     "submit": "搜索",
     "clear": "清空搜索词",
     "completionHint": "↑↓ 选择 · Tab 插入 · Esc 关闭",
@@ -44,8 +44,9 @@
     "onlyQuality": "仅优质结果",
     "onlyQualityAria": "只看相关度不低于 1.5 的结果",
     "advanced": "高级语法",
-    "resetTooltip": "恢复默认参数（条数、排序、开关、本地化 IP）",
-    "resetAria": "恢复默认参数"
+    "resetTooltip": "恢复为设置里的默认参数，不修改已保存的值",
+    "resetAria": "恢复为已保存的默认参数",
+    "scopeHint": "条数与「返回正文」在下次搜索时生效；排序与「仅优质结果」立即生效。这里的改动只留到刷新页面为止，不会写进设置。"
   },
   "preset": {
     "countOption": "{count} 条",
@@ -67,7 +68,7 @@
     "previewLabel": "生成的搜索词",
     "previewEmpty": "尚未填写条件",
     "apply": "写入并搜索",
-    "applyHint": "会替换搜索框内容并立即搜索。",
+    "applyHint": "会直接替换搜索框内容并立即调用搜索",
     "keywords": "全部关键词",
     "keywordsPlaceholder": "空格分隔，结果需全部包含",
     "phrase": "精确短语",
@@ -95,7 +96,7 @@
     "oriQuestionHelp": "≤128 字符，帮助服务端理解搜索意图",
     "oriQuestionPlaceholder": "例如：怎么在生产环境部署 vLLM？",
     "localization": "本地化 IP",
-    "localizationPlaceholder": "203.0.113.10"
+    "localizationPlaceholder": "1.1.1.1"
   },
   "results": {
     "loading": "正在搜索「{query}」…",
@@ -106,7 +107,7 @@
     "emptyFiltered": "当前筛选条件下没有结果，可关闭本地筛选后再看。",
     "emptySearch": "换个说法，或去掉 site: / after: 之类的限定词再试。",
     "disableQualityFilter": "关闭「仅优质结果」",
-    "footer": "结果来自 DeepSeek Search API；本页不代理、不存储请求。"
+    "footer": "服务提供来自 DeepSeek Search API。本站不代理、不存储请求，用户需要对自己的服务使用行为负责。"
   },
   "result": {
     "untitled": "（无标题）",
@@ -126,7 +127,7 @@
     "showContent": "正文",
     "hideContent": "收起正文",
     "copyFailed": "复制失败",
-    "copyFailedDescription": "浏览器未授予剪贴板权限，请手动选择文本复制。",
+    "copyFailedDescription": "浏览器未授予剪贴板权限，请手动选择文本复制",
     "copySummary": "复制摘要"
   },
   "syntax": {
@@ -175,11 +176,12 @@
     "keyCleared": "已清除本机 API Key",
     "baseUrlLabel": "API 地址",
     "advancedHint": "一般不用改",
-    "baseUrlHelp": "默认官方接口；使用自建网关时替换。",
+    "baseUrlHelp": "默认官方接口，如果有同结构实现可替换。",
     "checkValidTitle": "凭据有效",
     "checkInvalidTitle": "凭据不可用",
     "checkUnknownTitle": "无法确认凭据",
-    "defaultsDescription": "新搜索的默认参数；结果页工具栏改的是同一份配置。",
+    "defaultsDescription": "这些是新搜索的默认值；结果页工具栏的临时调整只影响本次会话，不会写回这里。",
+    "resetDefaults": "恢复内置默认值",
     "countLabel": "返回条数",
     "countHelp": "1～50，只影响条数，不影响计费",
     "sortLabel": "排序方式",

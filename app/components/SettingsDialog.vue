@@ -290,7 +290,7 @@ function onHistoryToggle(enabled: boolean) {
               variant="outline"
               size="sm"
               icon="i-lucide-rotate-ccw"
-              :label="t('search.resetAria')"
+              :label="t('settings.resetDefaults')"
               @click="resetPrefs"
             />
           </section>

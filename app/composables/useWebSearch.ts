@@ -9,7 +9,7 @@ export type SearchStatus = 'idle' | 'loading' | 'success' | 'error'
  * 不主动并发重试，因为 Search 接口是账号级 5 QPS 限速。
  */
 export function useWebSearch() {
-  const { prefs, hasApiKey } = useSearchSettings()
+  const { prefs, queryOptions, hasApiKey } = useSearchSettings()
   const api = useSearchApi()
 
   const status = ref<SearchStatus>('idle')
@@ -20,7 +20,7 @@ export function useWebSearch() {
   let controller: AbortController | null = null
 
   /** 过滤/排序只在本地进行，因此这两者的差值就是「被本地设置藏起来的条数」。 */
-  const visibleResults = computed(() => applyViewOptions(results.value, prefs))
+  const visibleResults = computed(() => applyViewOptions(results.value, queryOptions))
   const hiddenCount = computed(() => results.value.length - visibleResults.value.length)
 
   async function run(query: string, oriQuestion = '') {
@@ -70,8 +70,8 @@ export function useWebSearch() {
 
     const body: SearchRequest = {
       query: trimmed,
-      count: prefs.count,
-      need_content: prefs.needContent,
+      count: queryOptions.count,
+      need_content: queryOptions.needContent,
       // 可选字段留空时直接省略：文档里 null 与「未提供」等价。
       ori_question: oriQuestion.trim() || undefined,
       localization: prefs.localization.trim() || undefined

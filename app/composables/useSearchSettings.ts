@@ -20,13 +20,21 @@ export interface SearchPrefs {
   locale: AppLocale
 }
 
+/** 一次查询实际用到的选项。设置弹窗只写默认值，工具栏只改这份会话内的副本。 */
+export interface QueryOptions {
+  count: number
+  needContent: boolean
+  onlyQuality: boolean
+  sort: SearchSortKey
+}
+
 const KEYS = {
   apiKey: 'dss.apiKey',
   baseUrl: 'dss.baseUrl',
   prefs: 'dss.prefs'
 } as const
 
-/** 单次查询相关的偏好：工具栏上的「恢复默认」只重置这一组。 */
+/** 单次查询相关的偏好：设置弹窗的「恢复内置默认值」只重置这一组。 */
 const QUERY_PREF_DEFAULTS: Pick<
   SearchPrefs,
   'count' | 'needContent' | 'onlyQuality' | 'sort' | 'localization' | 'localizationMode'
@@ -47,13 +55,30 @@ const PREF_DEFAULTS: SearchPrefs = {
 }
 
 /**
- * 模块级单例状态：设置弹窗、搜索栏和结果区共享同一份配置，
+ * 模块级单例状态：设置弹窗只有这一份持久化配置，
  * 这样在任一处保存 Key 后，其它组件立刻看到 hasApiKey 变化。
  */
 const apiKey = ref('')
 const baseUrl = ref(DEFAULT_BASE_URL)
 const prefs = reactive<SearchPrefs>({ ...PREF_DEFAULTS })
+
+/**
+ * 结果页工具栏改的是这一份：初始值取自持久化的默认参数，
+ * 之后只留在内存里——否则临时换个条数会把「新搜索的默认值」也改掉，
+ * 而且还落盘，刷新后依旧生效，用户根本无从察觉。
+ */
+const queryOptions = reactive<QueryOptions>(pickQuery(PREF_DEFAULTS))
+
 let hydrated = false
+
+function pickQuery(source: SearchPrefs): QueryOptions {
+  return {
+    count: source.count,
+    needContent: source.needContent,
+    onlyQuality: source.onlyQuality,
+    sort: source.sort
+  }
+}
 
 /** 首次调用时从 localStorage 还原。放在读取之后再挂 watch，避免用默认值覆盖已存配置。 */
 function hydrate() {
@@ -72,11 +97,18 @@ function hydrate() {
   if (prefs.localizationMode !== 'auto' && prefs.localizationMode !== 'custom') {
     prefs.localizationMode = 'custom'
   }
+  // 会话内的临时选项从存下来的默认值起步。
+  Object.assign(queryOptions, pickQuery(prefs))
 
   watch(apiKey, value => writeString(KEYS.apiKey, value))
   // 地址保持默认时不落盘，避免 localStorage 里留下「看起来配过」的痕迹。
   watch(baseUrl, value => writeString(KEYS.baseUrl, value === DEFAULT_BASE_URL ? '' : value))
   watch(prefs, value => writeJson(KEYS.prefs, value), { deep: true })
+  // 改了某个默认值就把它同步给本次会话，免得工具栏上的值悄悄盖住新默认值。
+  watch(
+    [() => prefs.count, () => prefs.needContent, () => prefs.onlyQuality, () => prefs.sort],
+    () => Object.assign(queryOptions, pickQuery(prefs))
+  )
 }
 
 export function useSearchSettings() {
@@ -90,19 +122,26 @@ export function useSearchSettings() {
     apiKey.value = ''
   }
 
-  /** 只重置单次查询相关的选项；布局与记录开关属于界面设置，在弹窗里单独控制。 */
+  /** 设置弹窗用：把持久化的默认参数还原成内置默认值，布局与记录开关不在此列。 */
   function resetPrefs() {
     Object.assign(prefs, QUERY_PREF_DEFAULTS)
+  }
+
+  /** 工具栏用：只把本次会话的临时选项还原成已保存的默认值，不碰存储。 */
+  function resetQueryOptions() {
+    Object.assign(queryOptions, pickQuery(prefs))
   }
 
   return {
     apiKey,
     baseUrl,
     prefs,
+    queryOptions,
     hasApiKey: computed(() => apiKey.value.trim().length > 0),
     isCustomBaseUrl: computed(() => baseUrl.value !== DEFAULT_BASE_URL),
     saveBaseUrl,
     clearApiKey,
-    resetPrefs
+    resetPrefs,
+    resetQueryOptions
   }
 }

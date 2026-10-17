@@ -44,8 +44,9 @@
     "onlyQuality": "Quality only",
     "onlyQualityAria": "Only results scoring at least 1.5",
     "advanced": "Query builder",
-    "resetTooltip": "Reset query options (count, sort, switches, localization IP)",
-    "resetAria": "Reset query options"
+    "resetTooltip": "Restore the saved defaults (the saved values stay untouched)",
+    "resetAria": "Restore saved defaults",
+    "scopeHint": "Count and “Full text” apply on the next search; sort and “Quality only” apply immediately. Changes here last until you reload and are never written to your settings."
   },
   "preset": {
     "countOption": "{count} results",
@@ -179,7 +180,8 @@
     "checkValidTitle": "Key is valid",
     "checkInvalidTitle": "Key is not usable",
     "checkUnknownTitle": "Could not confirm the key",
-    "defaultsDescription": "Defaults for new searches; the results toolbar edits the same values.",
+    "defaultsDescription": "These are the defaults for new searches; tweaks in the results toolbar only affect this session and are never written back here.",
+    "resetDefaults": "Reset to built-in defaults",
     "countLabel": "Results per search",
     "countHelp": "1–50; affects only how many results come back, not billing",
     "sortLabel": "Sort order",
