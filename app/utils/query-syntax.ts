@@ -2,6 +2,9 @@
  * 查询语法补全。把「像 IDE 一样提示」的逻辑收敛成纯函数：
  * 组件只负责渲染与键盘事件，新增运算符时不必改 UI。
  * 说明文案只带 i18n key 与插值参数，翻译在渲染时进行。
+ *
+ * 光标处的片段为空（字段为空、刚敲完空格、退格删到片段开头）时给出全部运算符，
+ * 面板因此可以默认展开：输入筛选、空格重置、退格恢复，全程不用先记住语法。
  */
 
 export interface SyntaxSuggestion {
@@ -25,7 +28,9 @@ export interface ActiveToken {
 }
 
 export interface SyntaxCompletion {
-  token: ActiveToken | null
+  /** 光标所在片段；空 token 表示「可以在这里开始写下一个条件」，同样是合法插入点。 */
+  token: ActiveToken
+  /** 空数组表示此处不提示（自由文本、没有值表的运算符） */
   items: SyntaxSuggestion[]
 }
 
@@ -43,15 +48,18 @@ const LANGUAGES: ValueSuggestion[] = ['zh', 'en', 'ja', 'ko', 'fr', 'de', 'es', 
 
 const CURRENT_YEAR = new Date().getFullYear()
 
-/** 运算符候选：prefix 决定「输入什么就提示什么」。 */
-const OPERATORS: (SyntaxSuggestion & { prefix: string })[] = [
-  { prefix: 'site:', insert: 'site:', label: 'site:', descriptionKey: 'syntax.site' },
-  { prefix: '-site:', insert: '-site:', label: '-site:', descriptionKey: 'syntax.excludeSite' },
-  { prefix: '"', insert: '""', label: '"…"', descriptionKey: 'syntax.phrase', caretOffset: 1 },
-  { prefix: '-"', insert: '-""', label: '-"…"', descriptionKey: 'syntax.excludePhrase', caretOffset: 2 },
-  { prefix: 'lang:', insert: 'lang:', label: 'lang:', descriptionKey: 'syntax.completion.lang' },
-  { prefix: 'after:', insert: 'after:', label: 'after:', descriptionKey: 'syntax.after' },
-  { prefix: 'before:', insert: 'before:', label: 'before:', descriptionKey: 'syntax.before' }
+/**
+ * 运算符候选。insert 同时决定「输入什么就提示什么」：
+ * 光标处的片段是它的前缀就出现在候选里，所以新增运算符不用再改补全逻辑。
+ */
+const OPERATORS: SyntaxSuggestion[] = [
+  { insert: 'site:', label: 'site:', descriptionKey: 'syntax.site' },
+  { insert: '-site:', label: '-site:', descriptionKey: 'syntax.excludeSite' },
+  { insert: '""', label: '"…"', descriptionKey: 'syntax.phrase', caretOffset: 1 },
+  { insert: '-""', label: '-"…"', descriptionKey: 'syntax.excludePhrase', caretOffset: 2 },
+  { insert: 'lang:', label: 'lang:', descriptionKey: 'syntax.completion.lang' },
+  { insert: 'after:', label: 'after:', descriptionKey: 'syntax.after' },
+  { insert: 'before:', label: 'before:', descriptionKey: 'syntax.before' }
 ]
 
 /** 值候选：冒号后继续输入时按前缀过滤。没有候选表的运算符交给用户自由输入。 */
@@ -79,29 +87,31 @@ export function activeTokenAt(query: string, caret: number): ActiveToken {
 
 /**
  * 当前位置的补全候选：
- * - 还没写冒号 → 补全运算符（`s` → `site:`，`-` → `-site:` / `-"…"`）
- * - 写了冒号且在候选表里 → 补全值（`lang:z` → `lang:zh`）
- * 其余情况返回空列表，避免在自由文本里插话。
+ * - 空 token（字段为空、刚敲完空格、退格删到片段开头）→ 列出全部运算符，作为默认展开的提示；
+ * - 还没写冒号 → 按前缀补全运算符（`s` → `site:`，`-` → `-site:` / `-"…"`）；
+ * - 写了冒号且在候选表里 → 按前缀补全值（`lang:z` → `lang:zh`）。
+ * 其余情况（自由文本、`site:` 这类没有值表的运算符）返回空列表，避免在用户写作时插话。
  */
 export function completeQuery(query: string, caret: number): SyntaxCompletion {
   const token = activeTokenAt(query, caret)
-  if (!token.text) return { token: null, items: [] }
+  const typed = token.text.toLowerCase()
 
-  const colon = token.text.indexOf(':')
+  if (!typed) return { token, items: OPERATORS }
+
+  const colon = typed.indexOf(':')
   if (colon === -1) {
-    const typed = token.text.toLowerCase()
-    const items = OPERATORS
-      .filter(operator => operator.prefix.toLowerCase().startsWith(typed))
-      .map(({ prefix: _prefix, ...suggestion }) => suggestion)
-    // 已经完全写出的运算符不再提示，避免插入后候选原地不动。
-    return { token, items: items.filter(item => item.insert !== token.text) }
+    return {
+      token,
+      // 已经完全写出的运算符不再提示，避免插入后候选原地不动。
+      items: OPERATORS.filter(item => item.insert.toLowerCase().startsWith(typed) && item.insert !== token.text)
+    }
   }
 
-  const key = token.text.slice(0, colon).toLowerCase()
-  const typedValue = token.text.slice(colon + 1).toLowerCase()
+  const key = typed.slice(0, colon)
   const table = VALUE_TABLES[key]
-  if (!table) return { token: null, items: [] }
+  if (!table) return { token, items: [] }
 
+  const typedValue = typed.slice(colon + 1)
   const items = table
     .filter(entry => entry.value.toLowerCase().startsWith(typedValue))
     .map(entry => ({
@@ -110,8 +120,7 @@ export function completeQuery(query: string, caret: number): SyntaxCompletion {
       descriptionKey: entry.descriptionKey,
       descriptionParams: entry.descriptionParams
     }))
-    .filter(item => item.insert !== token.text)
-  return { token, items }
+  return { token, items: items.filter(item => item.insert !== token.text) }
 }
 
 /** 用候选替换 token，并给出插入后的光标位置。 */

@@ -5,8 +5,8 @@ import type { QueryBuilderFields } from '~/utils/query-builder'
 /**
  * 高级语法生成器：把结构化条件拼成搜索词。
  * 作为浮动面板内容使用，自身只负责「固定头尾 + 中间滚动」的骨架：
- * 头部操作按钮与底部「写入并搜索」始终可见，中间的字段区和语法速查独立滚动，
- * 展开语法速查也不会把按钮挤出可视范围。
+ * 头部操作按钮与底部「写入并搜索」始终可见，中间的字段区独立滚动，
+ * 字段再多也不会把按钮挤出可视范围。语法用法见右上角「使用提示」。
  *
  * 解析是「尽力而为」的：认不出的片段原样留在「全部关键词」里，
  * 而且只在用户点「从搜索框解析」时才回填，避免悄悄改写已写好的查询。
@@ -22,7 +22,6 @@ const { localizationModeItems } = usePresetItems()
 const oriQuestion = defineModel<string>('oriQuestion', { default: '' })
 
 const fields = reactive<QueryBuilderFields>({ ...EMPTY_BUILDER_FIELDS })
-const showSyntax = ref(false)
 
 const preview = computed(() => buildQuery(fields))
 
@@ -65,15 +64,6 @@ function onModeChange(value: unknown) {
           :label="t('advanced.clearFields')"
           @click="clearFields"
         />
-        <UButton
-          size="xs"
-          color="neutral"
-          variant="ghost"
-          icon="i-lucide-book-open"
-          :label="t('advanced.syntaxList')"
-          :aria-expanded="showSyntax"
-          @click="showSyntax = !showSyntax"
-        />
       </div>
     </header>
 
@@ -114,8 +104,6 @@ function onModeChange(value: unknown) {
           {{ preview || t('advanced.previewEmpty') }}
         </p>
       </div>
-
-      <SearchSyntaxList v-if="showSyntax" @use="value => emit('apply', value)" />
 
       <div class="grid gap-3 border-t border-default pt-4 sm:grid-cols-2">
         <UFormField

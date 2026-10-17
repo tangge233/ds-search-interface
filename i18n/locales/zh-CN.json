@@ -14,15 +14,17 @@
   "header": {
     "settings": "设置",
     "settingsApiKey": "设置 API Key",
-    "customBaseUrl": "自定义地址"
+    "customBaseUrl": "自定义地址",
+    "help": "使用提示",
+    "helpTitle": "使用提示",
+    "helpDescription": "输入 site:、lang:、after: 等运算符时，光标处会列出候选：↑↓ 选择、Tab 插入、Esc 关闭。点下面的示例可直接填入并搜索，按 / 可聚焦搜索框。"
   },
   "home": {
     "description": "实时网页搜索，结果附相关度与权威性评分；API Key 只保存在本机浏览器。",
-    "syntaxHint": "支持 site:、lang:、after: 等语法补全，Tab 插入；按 / 聚焦搜索框。",
+    "syntaxHint": "支持 site:、lang:、after: 等语法，聚焦搜索框即出现候选；完整用法见右上角「使用提示」。",
     "apiKeyAlertTitle": "填入 DeepSeek API Key 后开始搜索",
     "apiKeyAlertDescription": "请求由浏览器直连 api.deepseek.com，Key 不离开本机。",
     "goSettings": "去设置",
-    "syntaxToggle": "支持的搜索语法",
     "historyTitle": "最近搜索",
     "historyClear": "清空记录"
   },
@@ -62,7 +64,6 @@
     "title": "高级语法生成器",
     "parse": "从搜索框解析",
     "clearFields": "清空条件",
-    "syntaxList": "语法速查",
     "previewLabel": "生成的搜索词",
     "previewEmpty": "尚未填写条件",
     "apply": "写入并搜索",

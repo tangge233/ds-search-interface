@@ -14,15 +14,17 @@
   "header": {
     "settings": "Settings",
     "settingsApiKey": "Set API key",
-    "customBaseUrl": "Custom endpoint"
+    "customBaseUrl": "Custom endpoint",
+    "help": "Usage tips",
+    "helpTitle": "Usage tips",
+    "helpDescription": "Typing site:, lang: or after: lists suggestions at the cursor: ↑↓ to choose, Tab to insert, Esc to close. Click an example below to search with it; press / to focus the search field."
   },
   "home": {
     "description": "Live web search with relevance and authority scores. Your API key stays in this browser.",
-    "syntaxHint": "Typing site:, lang: or after: shows completions; Tab inserts. Press / to focus the search box.",
+    "syntaxHint": "Supports site:, lang:, after: and more — focusing the field shows suggestions. Full syntax lives under “Usage tips” at the top right.",
     "apiKeyAlertTitle": "Add a DeepSeek API key to search",
     "apiKeyAlertDescription": "Searches go from the browser straight to api.deepseek.com; the key never leaves this device.",
     "goSettings": "Open settings",
-    "syntaxToggle": "Supported search syntax",
     "historyTitle": "Recent searches",
     "historyClear": "Clear"
   },
@@ -62,7 +64,6 @@
     "title": "Query builder",
     "parse": "Parse from search box",
     "clearFields": "Clear fields",
-    "syntaxList": "Syntax cheat sheet",
     "previewLabel": "Generated query",
     "previewEmpty": "No conditions yet",
     "apply": "Apply and search",

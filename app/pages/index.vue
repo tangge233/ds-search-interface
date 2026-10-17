@@ -26,17 +26,9 @@ const {
 const query = ref('')
 const oriQuestion = ref('')
 const settingsOpen = ref(false)
-const syntaxOpen = ref(false)
 
 const heroField = useTemplateRef<{ focus: () => void } | null>('heroField')
 const resultField = useTemplateRef<{ focus: () => void } | null>('resultField')
-
-/** 示例查询本身就是搜索语法，不随界面语言翻译。 */
-const EXAMPLES = [
-  'DeepSeek V4 模型 发布',
-  'site:github.com vLLM 部署',
-  'lang:zh after:2026-01 大模型 定价'
-]
 
 const isIdle = computed(() => status.value === 'idle')
 
@@ -88,7 +80,6 @@ async function submit() {
 
 function searchWith(value: string) {
   query.value = value
-  syntaxOpen.value = false
   submit()
 }
 
@@ -137,7 +128,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
 <template>
   <div class="flex min-h-dvh flex-col bg-default">
-    <AppHeader @open-settings="settingsOpen = true" @reset="resetAll" />
+    <AppHeader
+      @open-settings="settingsOpen = true"
+      @reset="resetAll"
+      @use-query="searchWith"
+    />
 
     <!-- 首屏：纯中性底色，强调色只留给控件 -->
     <main v-if="isIdle" class="flex-1">
@@ -176,31 +171,6 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             <UButton size="xs" :label="t('home.goSettings')" @click="settingsOpen = true" />
           </template>
         </UAlert>
-
-        <div class="mt-6 flex flex-wrap justify-center gap-2">
-          <UButton
-            v-for="example in EXAMPLES"
-            :key="example"
-            size="xs"
-            color="neutral"
-            variant="subtle"
-            :label="example"
-            @click="searchWith(example)"
-          />
-        </div>
-
-        <div class="mt-6 text-left">
-          <button
-            type="button"
-            class="flex items-center gap-1 rounded text-xs text-dimmed hover:text-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            :aria-expanded="syntaxOpen"
-            @click="syntaxOpen = !syntaxOpen"
-          >
-            <UIcon :name="syntaxOpen ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'" class="size-3.5" />
-            {{ t('home.syntaxToggle') }}
-          </button>
-          <SearchSyntaxList v-if="syntaxOpen" class="mt-3" @use="searchWith" />
-        </div>
 
         <section v-if="prefs.keepHistory && history.length" class="mt-6 text-left">
           <div class="flex items-baseline justify-between">

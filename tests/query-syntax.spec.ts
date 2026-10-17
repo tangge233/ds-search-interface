@@ -22,6 +22,23 @@ describe('completeQuery', () => {
     expect(inserts('vllm -', 6)).toEqual(['-site:', '-""'])
   })
 
+  it('空片段给出全部运算符，面板因此可以默认展开', () => {
+    const all = ['site:', '-site:', '""', '-""', 'lang:', 'after:', 'before:']
+    // 刚聚焦、查询词为空
+    expect(inserts('', 0)).toEqual(all)
+    // 敲完空格：光标处开始新片段，回到默认列表
+    expect(inserts('vllm ', 5)).toEqual(all)
+  })
+
+  it('空片段的 token 仍是可用作插入点的位置', () => {
+    expect(completeQuery('vllm ', 5).token).toEqual({ start: 5, end: 5, text: '' })
+  })
+
+  it('退格删字符后重新匹配：删掉冒号回到运算符，删掉值回到值表', () => {
+    expect(inserts('vllm site', 9)).toEqual(['site:'])
+    expect(inserts('vllm lang:', 10)).toHaveLength(8)
+  })
+
   it('已经完整写出的运算符不再提示', () => {
     expect(inserts('vllm site:', 10)).toEqual([])
   })
@@ -32,12 +49,11 @@ describe('completeQuery', () => {
   })
 
   it('没有值表的运算符交给用户自由输入', () => {
-    expect(completeQuery('site:github.com', 15)).toEqual({ token: null, items: [] })
+    expect(inserts('site:github.com', 15)).toEqual([])
   })
 
   it('自由文本里不插话', () => {
     expect(inserts('vllm 部署', 7)).toEqual([])
-    expect(completeQuery('', 0)).toEqual({ token: null, items: [] })
   })
 })
 
