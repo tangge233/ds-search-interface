@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+  /* 只用本机可能存在的字体，不引外部字体请求：离线部署也不掉字。 */
+  --font-sans: 'Inter var', 'Inter', system-ui, -apple-system, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+:root {
+  --ui-radius: 0.625rem;
+}
+
+/* 浮动面板（Popover / Modal）的层级感。
+   默认的 shadow-lg / shadow-xl 都是 10% 黑，在纯白页面上几乎看不出来，
+   所以这里用「更实的投影 + 1px 描边」两层叠加，深色模式换更重的投影。
+   不加 @layer：未分层的规则优先级高于 Tailwind 的 utilities，能覆盖组件的 shadow-*。 */
+.floating-panel {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--ui-text-highlighted) 12%, transparent),
+    0 12px 28px -8px color-mix(in oklab, var(--ui-text-highlighted) 26%, transparent),
+    0 4px 10px -4px color-mix(in oklab, var(--ui-text-highlighted) 16%, transparent);
+}
+
+.dark .floating-panel {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, white 16%, transparent),
+    0 16px 40px -8px rgb(0 0 0 / 0.7),
+    0 4px 12px -4px rgb(0 0 0 / 0.55);
+}
+
+/* 结果正文（Markdown 原文）保持可读的换行节奏。 */
+.result-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+}

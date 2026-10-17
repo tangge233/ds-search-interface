@@ -1,0 +1,16 @@
+# pnpm 12 把「允许执行安装脚本」的依赖白名单放在这里（package.json 里的 pnpm.* 已不再读取）。
+allowBuilds:
+  # 构建工具链与 lint 解析器需要 postinstall 落盘原生二进制。
+  esbuild: true
+  unrs-resolver: true
+  # 按 Vue 版本切换入口，不执行会指向错误的分支。
+  vue-demi: true
+
+# 供应链策略默认拦截刚发布的版本，以下是本项目构建链必需的例外。
+minimumReleaseAgeExclude:
+  - '@nuxt/kit@4.6.2'
+  - '@nuxt/nitro-server@4.6.2'
+  - '@nuxt/schema@4.6.2'
+  - '@nuxt/vite-builder@4.6.2'
+  - '@nuxt/vite-server@4.6.2'
+  - nuxt@4.6.2
