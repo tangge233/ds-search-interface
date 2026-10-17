@@ -273,6 +273,37 @@ function onHistoryToggle(enabled: boolean) {
               </p>
             </div>
 
+            <!-- 源码与许可：MIT 允许商用与再发布，但要求保留版权与许可声明，这里如实写明。 -->
+            <div class="space-y-2.5 rounded-lg border border-default px-3.5 py-3">
+              <p class="text-sm text-toned">
+                项目以 MIT 许可证开源：可自由使用、修改与再分发，包括商用；再分发时需保留原始版权声明与许可证全文。
+              </p>
+              <div class="flex flex-wrap items-center gap-2">
+                <UButton
+                  to="https://github.com/tangge233/ds-search-interface"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  size="xs"
+                  color="neutral"
+                  variant="outline"
+                  icon="i-lucide-github"
+                  label="GitHub 仓库"
+                  trailing-icon="i-lucide-arrow-up-right"
+                />
+                <UButton
+                  to="https://github.com/tangge233/ds-search-interface/blob/main/LICENSE"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  size="xs"
+                  color="neutral"
+                  variant="outline"
+                  icon="i-lucide-scale"
+                  label="MIT 许可证全文"
+                  trailing-icon="i-lucide-arrow-up-right"
+                />
+              </div>
+            </div>
+
             <UAlert
               color="info"
               variant="subtle"
