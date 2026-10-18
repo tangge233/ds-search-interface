@@ -1,0 +1,311 @@
+{
+  "app": {
+    "name": "DeepSeek 検索インターフェース"
+  },
+  "meta": {
+    "title": "DeepSeek 検索インターフェース",
+    "description": "DeepSeek Search API を使ったフロントエンド専用のウェブ検索 UI です。API キーがこのブラウザから出ることはありません。"
+  },
+  "common": {
+    "retry": "再試行",
+    "openSettings": "設定を開く",
+    "backHome": "最初に戻る"
+  },
+  "header": {
+    "settings": "設定",
+    "settingsApiKey": "API キーを設定",
+    "customBaseUrl": "カスタムエンドポイント",
+    "help": "使い方のヒント",
+    "helpTitle": "使い方のヒント",
+    "helpDescription": "site:、lang:、after: などを入力すると、カーソル位置に候補が表示されます。↑↓ で選択、Tab で挿入、Esc で閉じます。下の例をクリックするとそのまま検索できます。/ キーで検索欄にフォーカスします。"
+  },
+  "home": {
+    "description": "関連度と信頼性スコア付きの最新ウェブ検索。API キーはこのブラウザにのみ保存されます。",
+    "syntaxHint": "site:、lang:、after: などの構文に対応しています。検索欄にフォーカスすると候補が表示されます。詳しい構文は右上の「使い方のヒント」にあります。",
+    "apiKeyAlertTitle": "DeepSeek API キーを追加して検索を開始",
+    "apiKeyAlertDescription": "検索はブラウザから api.deepseek.com に直接送信され、キーがこの端末から出ることはありません。",
+    "goSettings": "設定を開く",
+    "historyTitle": "最近の検索",
+    "historyClear": "クリア"
+  },
+  "search": {
+    "placeholder": "キーワード、または site: lang: after: 構文",
+    "submit": "検索",
+    "clear": "検索語をクリア",
+    "completionHint": "↑↓ で選択 · Tab で挿入 · Esc で閉じる",
+    "length": "{count} / 128 文字",
+    "lengthOver": "{count} / 128 文字 — 上限を超えているため送信できません",
+    "countLabel": "表示件数",
+    "countAria": "結果の件数",
+    "sortLabel": "並び順",
+    "sortAria": "並び順",
+    "needContent": "本文を取得",
+    "needContentAria": "ページ本文を返す",
+    "onlyQuality": "高品質のみ",
+    "onlyQualityAria": "スコア 1.5 以上の結果のみ表示",
+    "advanced": "クエリビルダー",
+    "resetTooltip": "保存済みの既定値に戻します（保存内容は変更しません）",
+    "resetAria": "保存済みの既定値に戻す",
+    "scopeHint": "件数と「本文を取得」は次回の検索から適用され、並び順と「高品質のみ」はすぐに適用されます。ここでの変更はページを再読み込みするまで有効で、設定には保存されません。"
+  },
+  "preset": {
+    "countOption": "{count} 件",
+    "sort": {
+      "relevance": "関連度",
+      "authority": "信頼性優先",
+      "date": "新着順"
+    },
+    "layout": {
+      "center": "中央揃え・1 列",
+      "left": "左揃え・1 列",
+      "columns": "ワイド画面で複数列"
+    }
+  },
+  "advanced": {
+    "title": "クエリビルダー",
+    "parse": "検索欄から解析",
+    "clearFields": "条件をクリア",
+    "previewLabel": "生成されたクエリ",
+    "previewEmpty": "条件がまだありません",
+    "apply": "適用して検索",
+    "applyHint": "検索欄の内容を置き換えてすぐに検索します。",
+    "keywords": "すべてのキーワード",
+    "keywordsPlaceholder": "スペース区切り。すべてを含む結果に絞り込みます",
+    "phrase": "完全一致フレーズ",
+    "phrasePlaceholder": "フレーズ全体に一致",
+    "excludeKeywords": "除外キーワード",
+    "excludeKeywordsPlaceholder": "広告 プロモーション",
+    "excludePhrase": "除外フレーズ",
+    "excludePhrasePlaceholder": "release notes",
+    "site": "対象サイト",
+    "siteHelp": "複数のサイトは OR で結合されます",
+    "sitePlaceholder": "github.com huggingface.co",
+    "excludeSite": "除外サイト",
+    "excludeSitePlaceholder": "example.com",
+    "lang": "言語",
+    "langHelp": "カンマ区切りで lang:zh,en を生成",
+    "langPlaceholder": "ja,en",
+    "after": "この日以降に公開",
+    "afterHelp": "after: を生成",
+    "afterPlaceholder": "2025 または 2025-01-01",
+    "before": "この日より前に公開",
+    "beforeHelp": "before: を生成",
+    "beforePlaceholder": "2026",
+    "oriQuestion": "元の質問",
+    "optional": "任意",
+    "oriQuestionHelp": "128 文字まで。サーバーが検索意図を理解するのに役立ちます",
+    "oriQuestionPlaceholder": "例：vLLM を本番環境にデプロイするには？",
+    "localization": "ローカライズ IP",
+    "localizationPlaceholder": "203.0.113.10"
+  },
+  "results": {
+    "loading": "「{query}」を検索しています…",
+    "summary": "「{query}」の結果：{count} 件",
+    "hidden": "（うち {count} 件はローカルフィルターで非表示）",
+    "elapsed": "所要時間 {seconds} 秒",
+    "emptyTitle": "表示できる結果がありません",
+    "emptyFiltered": "現在のフィルターに一致する結果がありません。ローカルフィルターを解除するとすべて表示されます。",
+    "emptySearch": "別の表現を試すか、site: / after: などの条件を外してみてください。",
+    "disableQualityFilter": "「高品質のみ」を解除",
+    "footer": "結果は DeepSeek Search API から提供されます。このページはリクエストを中継・保存しません。"
+  },
+  "result": {
+    "untitled": "（無題）",
+    "contentLabel": "ページ本文（Markdown、最大 20,000 文字）",
+    "copyContent": "本文をコピー",
+    "contentCopied": "ページ本文をコピーしました",
+    "scoreTooltip": "関連度 0～3。1.5 以上が高品質です",
+    "score": "{score} 点",
+    "authorityUnknown": "信頼性不明",
+    "authority": "信頼性 {level}/4",
+    "summary": "長い要約（{count} 文字）",
+    "summaryOpen": "要約",
+    "summaryCopied": "要約をコピーしました",
+    "copyLink": "リンクをコピー",
+    "linkCopied": "リンクをコピーしました",
+    "open": "開く",
+    "showContent": "本文",
+    "hideContent": "本文を閉じる",
+    "copyFailed": "コピーに失敗しました",
+    "copyFailedDescription": "ブラウザがクリップボードへのアクセスを拒否しました。テキストを選択して手動でコピーしてください。",
+    "copySummary": "要約をコピー"
+  },
+  "syntax": {
+    "listTitle": "対応している検索構文",
+    "site": "指定したサイト内だけを検索。複数のサイトは OR で結合",
+    "excludeSite": "指定したサイトを除外",
+    "phrase": "このフレーズに完全一致",
+    "excludeKeyword": "このキーワードを含むページを除外",
+    "excludePhrase": "このフレーズを含むページを除外",
+    "lang": "言語を限定。複数の言語はカンマで区切る",
+    "after": "この日以降に公開されたページのみ",
+    "before": "この日より前に公開されたページのみ",
+    "completion": {
+      "lang": "言語を限定（例：lang:zh,en）",
+      "afterYear": "{year} 年以降",
+      "beforeYear": "{year} 年より前"
+    },
+    "languages": {
+      "zh": "中国語",
+      "en": "英語",
+      "ja": "日本語",
+      "ko": "韓国語",
+      "fr": "フランス語",
+      "de": "ドイツ語",
+      "es": "スペイン語",
+      "ru": "ロシア語"
+    }
+  },
+  "settings": {
+    "title": "設定",
+    "description": "この端末にのみ保存されます。「接続」以外の変更は自動保存されます。",
+    "sectionConnection": "接続",
+    "sectionDefaults": "検索の既定値",
+    "sectionInterface": "インターフェースと履歴",
+    "sectionAbout": "このアプリについて",
+    "connectionDescription": "API キーとエンドポイント。「接続を保存」をクリックすると反映されます。",
+    "apiKeyLabel": "API キー",
+    "apiKeyHelp": "platform.deepseek.com の API Keys で作成します（sk-… の形式）。",
+    "showKey": "API キーを表示",
+    "hideKey": "API キーを隠す",
+    "saveConnection": "接続を保存",
+    "savedTitle": "接続を保存しました",
+    "savedDescription": "API キーはこの端末の localStorage にのみ書き込まれます。",
+    "verify": "キーを検証",
+    "clearKey": "この端末から API キーを削除",
+    "keyCleared": "この端末から API キーを削除しました",
+    "baseUrlLabel": "API エンドポイント",
+    "advancedHint": "通常は変更不要",
+    "baseUrlHelp": "既定では公式エンドポイント。セルフホストのゲートウェイを使う場合は置き換えてください。",
+    "checkValidTitle": "キーは有効です",
+    "checkInvalidTitle": "キーは使用できません",
+    "checkUnknownTitle": "キーを確認できませんでした",
+    "defaultsDescription": "新しい検索の既定値です。結果ページのツールバーでの変更は今回のセッションにのみ適用され、ここには書き戻されません。",
+    "resetDefaults": "組み込みの既定値に戻す",
+    "countLabel": "検索あたりの結果数",
+    "countHelp": "1～50。返る件数だけに影響し、課金には影響しません",
+    "sortLabel": "並び順",
+    "sortHelp": "ローカルで並べ替えるため追加料金はありません。「関連度」は API の順序を維持します",
+    "localizationLabel": "ローカライズ IP",
+    "needContentLabel": "ページ本文を返す",
+    "needContentDescription": "ページ全体を返し、結果内で展開して読めます。",
+    "onlyQualityLabel": "高品質な結果のみ",
+    "onlyQualityDescription": "スコアが 1.5 未満の結果を非表示にします。",
+    "interfaceDescription": "結果のレイアウト、表示言語、検索履歴。",
+    "layoutLabel": "結果のレイアウト",
+    "layoutHelp": "1024px 以上で 2 列になります。",
+    "languageLabel": "表示言語",
+    "languageHelp": "すぐに反映されます。",
+    "languageModeLabel": "表示言語の選択方法",
+    "languageModeAuto": "自動（ブラウザに従う）",
+    "languageModeManual": "手動で選択",
+    "languageAutoCurrent": "現在の言語：{language}",
+    "languageAutoHelp": "ブラウザの言語設定に従って自動的に選択し、設定が変わると切り替わります。",
+    "keepHistoryLabel": "検索履歴を保存",
+    "keepHistoryDescription": "オフにすると記録が停止し、既存の履歴も削除されます。",
+    "aboutIntro": "Vue 3、Nuxt 4、Nuxt UI で構築したフロントエンド専用の UI です。",
+    "aboutApiDocs": "DeepSeek Search API ドキュメント",
+    "licenseText": "MIT ライセンス：著作権表示とライセンス全文を保持すれば、商用を含めて自由に使用・変更・再配布できます。",
+    "githubRepo": "GitHub リポジトリ",
+    "licenseLink": "MIT ライセンス全文",
+    "billingTitle": "課金",
+    "billingText": "成功したリクエスト 1,000 件あたり 5 元。結果が返ったリクエストのみ課金されます。「キーを検証」は検索を実行しないため課金されません。",
+    "billingLink": "DeepSeek 料金ドキュメント",
+    "rateTitle": "レート制限",
+    "rateText": "アカウントあたり 5 QPS。上限に達すると、しばらく待って再試行するよう表示されます。",
+    "rateLink": "公式 API ガイド",
+    "dataTitle": "データの送信先",
+    "dataText": "独自のバックエンドはありません。設定したエンドポイントに API キーとクエリを送信する以外、他のサーバーへの送信や保存は行いません。「自動」を選ぶと myip.ipip.net に別途リクエストしますが、そのリクエストにキーやクエリは含まれません。",
+    "dutyTitle": "利用者の責任",
+    "dutyText": "API キーの管理、アカウントの利用料金、検索結果の利用方法は利用者の責任です。DeepSeek の利用規約を守り、結果が自身の用途に適しているかご自身で判断してください。",
+    "storageTitle": "ローカルストレージ",
+    "storageText": "API キーは localStorage に平文で保存され、同一オリジンのスクリプトから読み取れます。共用のコンピューターでは、使い終わったら「この端末から API キーを削除」をクリックしてください。"
+  },
+  "verify": {
+    "valid": "キーは有効です。検索を開始できます。",
+    "invalidKey": "API キーが無効か、削除されています。",
+    "insufficient": "アカウントの残高が不足しています。チャージして再試行してください。",
+    "httpError": "API が HTTP {status} を返しました。キーの状態は不明です。",
+    "httpErrorWithMessage": "API が HTTP {status} を返しました：{message}。キーの状態は不明です。",
+    "network": "リクエストを送信できませんでした（オフライン、プロキシ、CORS など）。そのまま検索を試すこともできます。",
+    "enterKeyFirst": "先に API キーを入力してください。",
+    "failed": "検証リクエストに失敗しました。しばらくしてから再試行してください。"
+  },
+  "errors": {
+    "validation": {
+      "emptyQuery": "検索語を入力してください。",
+      "queryTooLong": "検索語は 128 文字までです。",
+      "oriQuestionTooLong": "元の質問は 128 文字までです。",
+      "localization": "ローカライズ IP が正しくありません（例：203.0.113.10 または 2001:db8::1）。"
+    },
+    "contract": {
+      "missingResults": "レスポンスに results フィールドがありません。Search API の応答ではない可能性があります。",
+      "resultsNotArray": "results フィールドが配列ではありません。Search API の応答ではない可能性があります。",
+      "itemsMissingUrl": "results 内の項目に url フィールドがありません。API のフィールド名がドキュメントと異なる可能性があります。",
+      "title": "想定外のレスポンス形式",
+      "hint": "API エンドポイントが DeepSeek Search 互換のサービスを指しているか確認するか、ゲートウェイが results フィールドをそのまま転送するようにしてください。"
+    },
+    "status": {
+      "400": {
+        "title": "リクエストが不正です",
+        "hint": "検索語が 1～128 文字か、構文がドキュメントどおりか確認してください。"
+      },
+      "401": {
+        "title": "API キーが無効です",
+        "hint": "設定でキーを再入力し、このアカウントのもので削除されていないことを確認してください。"
+      },
+      "402": {
+        "title": "残高不足",
+        "hint": "検索は成功したリクエスト 1,000 件あたり 5 元です。チャージして再試行してください。"
+      },
+      "403": {
+        "title": "リクエストが拒否されました",
+        "hint": "API の安全ポリシーにより拒否されました。別の検索語をお試しください。"
+      },
+      "404": {
+        "title": "利用できるコンテンツがありません",
+        "hint": "対象のリソースを利用できません。検索語を調整して再試行してください。"
+      },
+      "408": {
+        "title": "リクエストがタイムアウトしました",
+        "hint": "数秒待ってから再試行してください。"
+      },
+      "413": {
+        "title": "リクエストが大きすぎます",
+        "hint": "検索語とオプションを減らして再試行してください。"
+      },
+      "429": {
+        "title": "リクエストが多すぎます",
+        "hint": "検索はアカウントあたり 5 QPS です。少し待ってから再検索してください。"
+      },
+      "500": {
+        "title": "サーバー内部エラー",
+        "hint": "しばらくしてから再試行してください。繰り返し失敗する場合はサーバー側の問題です。"
+      },
+      "504": {
+        "title": "上流のタイムアウト",
+        "hint": "しばらくしてから再試行してください。"
+      }
+    },
+    "statusDetailMissing": "API から詳細な説明は返されませんでした。",
+    "httpTitle": "リクエストに失敗しました（HTTP {status}）",
+    "unexpectedStatusDetail": "API が想定外のステータスコードを返しました。",
+    "unknownStatusHint": "しばらくしてから再試行してください。失敗が続く場合は設定で API エンドポイントを変更してください。",
+    "networkTitle": "DeepSeek API に接続できません",
+    "networkHint": "ネットワークを確認してください。プロキシやカスタムエンドポイントを使う場合は、クロスオリジンリクエスト（CORS）を許可する必要があります。",
+    "invalidInputTitle": "オプションが API の要件を満たしていません",
+    "invalidInputHint": "修正してから再送信してください。",
+    "missingKeyTitle": "API キーが設定されていません",
+    "missingKeyDetail": "Search API は Bearer 認証を使うため、自分の DeepSeek API キーが必要です。",
+    "missingKeyHint": "キーを追加して検索してください。キーはこのブラウザに保存されます。"
+  },
+  "localization": {
+    "modeAuto": "自動",
+    "modeCustom": "カスタム",
+    "customHelp": "結果をこの地域に寄せます。空欄の場合は指定しません。",
+    "autoHelp": "起動時に公衆 IP を取得します。",
+    "autoDetecting": "公衆 IP を取得しています…",
+    "autoFailedKeep": "IP を取得できませんでした。前回の値を引き続き使用します。",
+    "autoFailedNone": "IP を取得できませんでした。今回の検索では地域を指定しません。"
+  }
+}

@@ -2,7 +2,7 @@ import type { SearchSortKey } from '~/types/search'
 import { DEFAULT_BASE_URL } from '~/utils/endpoint'
 import type { AppLocale } from '~/utils/locales'
 import { APP_LOCALES, DEFAULT_LOCALE, detectLocale } from '~/utils/locales'
-import type { LocalizationMode, ResultsLayout } from '~/utils/search-presets'
+import type { LocaleMode, LocalizationMode, ResultsLayout } from '~/utils/search-presets'
 
 /** 持久化的搜索偏好（API Key 单独存放，便于一键清除）。 */
 export interface SearchPrefs {
@@ -16,7 +16,9 @@ export interface SearchPrefs {
   keepHistory: boolean
   /** 本地化 IP 的来源：自动获取或手动填写。 */
   localizationMode: LocalizationMode
-  /** 界面语言；i18n 的当前语言跟随它，而不是反过来。 */
+  /** 界面语言的来源：自动跟随浏览器偏好，或手动指定。 */
+  localeMode: LocaleMode
+  /** 当前界面语言；i18n 的当前语言跟随它，而不是反过来。 */
   locale: AppLocale
 }
 
@@ -51,6 +53,7 @@ const PREF_DEFAULTS: SearchPrefs = {
   ...QUERY_PREF_DEFAULTS,
   resultsLayout: 'center',
   keepHistory: true,
+  localeMode: 'auto',
   locale: DEFAULT_LOCALE
 }
 
@@ -90,9 +93,16 @@ function hydrate() {
   // 旧版本存下的 prefs 可能缺字段，用默认值补齐。
   const stored = readJson<Partial<SearchPrefs>>(KEYS.prefs, {})
   Object.assign(prefs, PREF_DEFAULTS, stored)
-  // 没存过语言（新用户或旧版本）才按浏览器判断；存过但 code 未知时退回默认。
-  if (!stored.locale) prefs.locale = detectLocale()
-  else if (!APP_LOCALES.some(item => item.code === stored.locale)) prefs.locale = DEFAULT_LOCALE
+  // 旧版本没有来源字段：已存语言视为用户的选择，按手动处理，避免升级后被浏览器语言覆盖；
+  // 没有存过语言的新用户默认自动跟随浏览器。
+  if (stored.localeMode !== 'auto' && stored.localeMode !== 'manual') {
+    prefs.localeMode = stored.locale ? 'manual' : 'auto'
+  }
+  if (prefs.localeMode === 'auto') {
+    prefs.locale = detectLocale()
+  } else if (!APP_LOCALES.some(item => item.code === prefs.locale)) {
+    prefs.locale = DEFAULT_LOCALE
+  }
   // 旧版本没有来源字段，或值无法识别时按「自定义」处理，与升级前的行为一致。
   if (prefs.localizationMode !== 'auto' && prefs.localizationMode !== 'custom') {
     prefs.localizationMode = 'custom'
@@ -109,6 +119,14 @@ function hydrate() {
     [() => prefs.count, () => prefs.needContent, () => prefs.onlyQuality, () => prefs.sort],
     () => Object.assign(queryOptions, pickQuery(prefs))
   )
+  // 切到自动模式立即按浏览器偏好重选；切回手动时保留当前语言作为起点。
+  watch(() => prefs.localeMode, (mode) => {
+    if (mode === 'auto') prefs.locale = detectLocale()
+  })
+  // 浏览器语言偏好变化时，自动模式同步切换；手动模式不打扰用户。
+  window.addEventListener('languagechange', () => {
+    if (prefs.localeMode === 'auto') prefs.locale = detectLocale()
+  })
 }
 
 export function useSearchSettings() {

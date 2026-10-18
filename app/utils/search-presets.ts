@@ -30,6 +30,14 @@ export const LOCALIZATION_MODE_OPTIONS: PresetOption<LocalizationMode>[] = [
   { value: 'custom', labelKey: 'localization.modeCustom' }
 ]
 
+/** 界面语言的来源：跟随浏览器语言偏好，或手动指定。 */
+export type LocaleMode = 'auto' | 'manual'
+
+export const LOCALE_MODE_OPTIONS: PresetOption<LocaleMode>[] = [
+  { value: 'auto', labelKey: 'settings.languageModeAuto' },
+  { value: 'manual', labelKey: 'settings.languageModeManual' }
+]
+
 export const LAYOUT_OPTIONS: PresetOption<ResultsLayout>[] = [
   { value: 'center', labelKey: 'preset.layout.center' },
   { value: 'left', labelKey: 'preset.layout.left' },

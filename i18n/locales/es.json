@@ -1,0 +1,311 @@
+{
+  "app": {
+    "name": "Interfaz de búsqueda de DeepSeek"
+  },
+  "meta": {
+    "title": "Interfaz de búsqueda de DeepSeek",
+    "description": "Una interfaz web de búsqueda totalmente del lado del cliente para la API DeepSeek Search. Tu clave API nunca sale de este navegador."
+  },
+  "common": {
+    "retry": "Reintentar",
+    "openSettings": "Abrir ajustes",
+    "backHome": "Volver al inicio"
+  },
+  "header": {
+    "settings": "Ajustes",
+    "settingsApiKey": "Configurar clave API",
+    "customBaseUrl": "Punto de conexión personalizado",
+    "help": "Consejos de uso",
+    "helpTitle": "Consejos de uso",
+    "helpDescription": "Al escribir site:, lang: o after: aparecen sugerencias junto al cursor: ↑↓ para elegir, Tab para insertar y Esc para cerrar. Haz clic en un ejemplo de abajo para buscar con él; pulsa / para enfocar el campo de búsqueda."
+  },
+  "home": {
+    "description": "Búsqueda web en vivo con puntuaciones de relevancia y autoridad. Tu clave API permanece en este navegador.",
+    "syntaxHint": "Admite site:, lang:, after: y más; al enfocar el campo aparecen sugerencias. La sintaxis completa está en «Consejos de uso», arriba a la derecha.",
+    "apiKeyAlertTitle": "Añade una clave API de DeepSeek para buscar",
+    "apiKeyAlertDescription": "Las búsquedas van del navegador directamente a api.deepseek.com; la clave nunca sale de este dispositivo.",
+    "goSettings": "Abrir ajustes",
+    "historyTitle": "Búsquedas recientes",
+    "historyClear": "Borrar"
+  },
+  "search": {
+    "placeholder": "Palabras clave o sintaxis site: lang: after:",
+    "submit": "Buscar",
+    "clear": "Borrar la consulta",
+    "completionHint": "↑↓ para elegir · Tab para insertar · Esc para cerrar",
+    "length": "{count} / 128 caracteres",
+    "lengthOver": "{count} / 128 caracteres — se supera el límite, no se puede enviar",
+    "countLabel": "Mostrar",
+    "countAria": "Número de resultados",
+    "sortLabel": "Ordenar por",
+    "sortAria": "Ordenar por",
+    "needContent": "Texto completo",
+    "needContentAria": "Devolver el contenido de la página",
+    "onlyQuality": "Solo alta calidad",
+    "onlyQualityAria": "Solo resultados con una puntuación de al menos 1,5",
+    "advanced": "Generador de consultas",
+    "resetTooltip": "Restaurar los valores predeterminados guardados (los valores guardados no cambian)",
+    "resetAria": "Restaurar los valores predeterminados guardados",
+    "scopeHint": "La cantidad y «Texto completo» se aplican en la próxima búsqueda; el orden y «Solo calidad» se aplican de inmediato. Los cambios aquí duran hasta que recargues la página y nunca se guardan en tus ajustes."
+  },
+  "preset": {
+    "countOption": "{count} resultados",
+    "sort": {
+      "relevance": "Relevancia",
+      "authority": "Autoridad primero",
+      "date": "Más recientes primero"
+    },
+    "layout": {
+      "center": "Centrado, una columna",
+      "left": "Alineado a la izquierda, una columna",
+      "columns": "Varias columnas en pantallas anchas"
+    }
+  },
+  "advanced": {
+    "title": "Generador de consultas",
+    "parse": "Analizar desde el buscador",
+    "clearFields": "Limpiar campos",
+    "previewLabel": "Consulta generada",
+    "previewEmpty": "Aún no hay condiciones",
+    "apply": "Aplicar y buscar",
+    "applyHint": "Reemplaza el contenido del buscador y busca inmediatamente.",
+    "keywords": "Todas las palabras clave",
+    "keywordsPlaceholder": "Separadas por espacios; los resultados deben contenerlas todas",
+    "phrase": "Frase exacta",
+    "phrasePlaceholder": "Coincidir con la frase completa",
+    "excludeKeywords": "Palabras clave a excluir",
+    "excludeKeywordsPlaceholder": "anuncios patrocinio",
+    "excludePhrase": "Frase a excluir",
+    "excludePhrasePlaceholder": "release notes",
+    "site": "Limitar a sitios",
+    "siteHelp": "Varios sitios se unen con OR",
+    "sitePlaceholder": "github.com huggingface.co",
+    "excludeSite": "Excluir sitios",
+    "excludeSitePlaceholder": "example.com",
+    "lang": "Idioma",
+    "langHelp": "Separados por comas; genera lang:zh,en",
+    "langPlaceholder": "es,en",
+    "after": "Publicado después de",
+    "afterHelp": "Genera after:",
+    "afterPlaceholder": "2025 o 2025-01-01",
+    "before": "Publicado antes de",
+    "beforeHelp": "Genera before:",
+    "beforePlaceholder": "2026",
+    "oriQuestion": "Pregunta original",
+    "optional": "Opcional",
+    "oriQuestionHelp": "Hasta 128 caracteres; ayuda al servidor a entender tu intención",
+    "oriQuestionPlaceholder": "p. ej., ¿cómo despliego vLLM en producción?",
+    "localization": "IP de localización",
+    "localizationPlaceholder": "203.0.113.10"
+  },
+  "results": {
+    "loading": "Buscando «{query}»…",
+    "summary": "«{query}» devolvió {count} resultados",
+    "hidden": ", de los cuales {count} están ocultos por los filtros locales",
+    "elapsed": "Tardó {seconds} s",
+    "emptyTitle": "No hay resultados que mostrar",
+    "emptyFiltered": "Nada coincide con los filtros actuales. Desactiva el filtrado local para verlo todo.",
+    "emptySearch": "Prueba otra formulación o elimina calificadores como site: / after:.",
+    "disableQualityFilter": "Desactivar «Solo alta calidad»",
+    "footer": "Resultados de la API DeepSeek Search. Esta página no retransmite ni almacena tus consultas."
+  },
+  "result": {
+    "untitled": "(sin título)",
+    "contentLabel": "Contenido de la página (Markdown, hasta 20.000 caracteres)",
+    "copyContent": "Copiar contenido",
+    "contentCopied": "Contenido de la página copiado",
+    "scoreTooltip": "Relevancia de 0 a 3; 1,5 o más es alta calidad",
+    "score": "{score} pts",
+    "authorityUnknown": "Autoridad desconocida",
+    "authority": "Autoridad {level}/4",
+    "summary": "Resumen largo ({count} caracteres)",
+    "summaryOpen": "Resumen",
+    "summaryCopied": "Resumen copiado",
+    "copyLink": "Copiar enlace",
+    "linkCopied": "Enlace copiado",
+    "open": "Abrir",
+    "showContent": "Contenido",
+    "hideContent": "Ocultar contenido",
+    "copyFailed": "Error al copiar",
+    "copyFailedDescription": "El navegador denegó el acceso al portapapeles. Selecciona el texto y cópialo manualmente.",
+    "copySummary": "Copiar resumen"
+  },
+  "syntax": {
+    "listTitle": "Sintaxis de búsqueda admitida",
+    "site": "Limitar los resultados a estos sitios; combina varios con OR",
+    "excludeSite": "Excluir estos sitios",
+    "phrase": "Coincidir exactamente con esta frase",
+    "excludeKeyword": "Excluir páginas que contengan esta palabra clave",
+    "excludePhrase": "Excluir páginas que contengan esta frase",
+    "lang": "Limitar el idioma; separa varios con comas",
+    "after": "Solo páginas publicadas después de esta fecha",
+    "before": "Solo páginas publicadas antes de esta fecha",
+    "completion": {
+      "lang": "Limitar el idioma, p. ej. lang:zh,en",
+      "afterYear": "Después de {year}",
+      "beforeYear": "Antes de {year}"
+    },
+    "languages": {
+      "zh": "Chino",
+      "en": "Inglés",
+      "ja": "Japonés",
+      "ko": "Coreano",
+      "fr": "Francés",
+      "de": "Alemán",
+      "es": "Español",
+      "ru": "Ruso"
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "description": "Solo se guardan en este dispositivo; los cambios fuera de «Conexión» se guardan automáticamente.",
+    "sectionConnection": "Conexión",
+    "sectionDefaults": "Valores predeterminados de búsqueda",
+    "sectionInterface": "Interfaz e historial",
+    "sectionAbout": "Acerca de",
+    "connectionDescription": "Clave API y punto de conexión. Se aplican al hacer clic en «Guardar conexión».",
+    "apiKeyLabel": "Clave API",
+    "apiKeyHelp": "Crea una en API Keys de platform.deepseek.com; tiene el formato sk-…",
+    "showKey": "Mostrar clave API",
+    "hideKey": "Ocultar clave API",
+    "saveConnection": "Guardar conexión",
+    "savedTitle": "Conexión guardada",
+    "savedDescription": "La clave API solo se escribe en el localStorage de este dispositivo.",
+    "verify": "Verificar clave",
+    "clearKey": "Eliminar la clave API de este dispositivo",
+    "keyCleared": "Clave API eliminada de este dispositivo",
+    "baseUrlLabel": "Punto de conexión de la API",
+    "advancedHint": "Normalmente sin cambios",
+    "baseUrlHelp": "Punto de conexión oficial por defecto; cámbialo si usas una pasarela autoalojada.",
+    "checkValidTitle": "La clave es válida",
+    "checkInvalidTitle": "La clave no se puede usar",
+    "checkUnknownTitle": "No se pudo confirmar la clave",
+    "defaultsDescription": "Son los valores predeterminados de las nuevas búsquedas; los ajustes de la barra de resultados solo afectan a esta sesión y nunca se escriben aquí.",
+    "resetDefaults": "Restablecer los valores predeterminados integrados",
+    "countLabel": "Resultados por búsqueda",
+    "countHelp": "1–50; solo afecta al número de resultados devueltos, no a la facturación",
+    "sortLabel": "Orden",
+    "sortHelp": "Se ordena localmente sin coste adicional; «Relevancia» mantiene el orden de la API",
+    "localizationLabel": "IP de localización",
+    "needContentLabel": "Devolver el contenido de la página",
+    "needContentDescription": "Devuelve la página completa, que puedes expandir y leer en el resultado.",
+    "onlyQualityLabel": "Solo resultados de calidad",
+    "onlyQualityDescription": "Oculta los resultados con una puntuación inferior a 1,5.",
+    "interfaceDescription": "Disposición de los resultados, idioma de la interfaz e historial de búsqueda.",
+    "layoutLabel": "Disposición de los resultados",
+    "layoutHelp": "Dos columnas a partir de 1024 px.",
+    "languageLabel": "Idioma de la interfaz",
+    "languageHelp": "Se aplica de inmediato.",
+    "languageModeLabel": "Origen del idioma",
+    "languageModeAuto": "Automático (navegador)",
+    "languageModeManual": "Elegir manualmente",
+    "languageAutoCurrent": "Idioma actual: {language}",
+    "languageAutoHelp": "Sigue la preferencia de idioma del navegador y cambia cuando esta cambia.",
+    "keepHistoryLabel": "Guardar historial de búsqueda",
+    "keepHistoryDescription": "Al desactivarlo se deja de registrar y se borra el historial existente.",
+    "aboutIntro": "Una interfaz totalmente del lado del cliente creada con Vue 3, Nuxt 4 y Nuxt UI.",
+    "aboutApiDocs": "Documentación de la API DeepSeek Search",
+    "licenseText": "Licencia MIT: puedes usarla, modificarla y redistribuirla libremente, incluso comercialmente, siempre que conserves el aviso de copyright y el texto completo de la licencia.",
+    "githubRepo": "Repositorio de GitHub",
+    "licenseLink": "Texto completo de la licencia MIT",
+    "billingTitle": "Facturación",
+    "billingText": "5 CNY por cada 1000 solicitudes correctas; solo se cobran las solicitudes que devuelven resultados. «Verificar clave» no lanza una búsqueda y no se factura.",
+    "billingLink": "Documentación de precios de DeepSeek",
+    "rateTitle": "Límites de velocidad",
+    "rateText": "5 QPS por cuenta; al alcanzar el límite, la página te pide que lo intentes de nuevo en breve.",
+    "rateLink": "guía oficial de la API",
+    "dataTitle": "Adónde van los datos",
+    "dataText": "No hay backend propio: aparte de enviar tu clave API y tu consulta al punto de conexión configurado, no se envía ni se almacena nada en ningún otro servidor. La opción «Automático» hace una solicitud aparte a myip.ipip.net que no lleva ni tu clave ni tu consulta.",
+    "dutyTitle": "Tu responsabilidad",
+    "dutyText": "Eres responsable de proteger tu clave API, de los cargos de la cuenta y del uso que hagas de los resultados. Respeta las condiciones del servicio de DeepSeek y juzga por ti mismo si los resultados se ajustan a tu caso.",
+    "storageTitle": "Almacenamiento local",
+    "storageText": "La clave API se guarda en texto plano en localStorage y cualquier script del mismo origen puede leerla. En un equipo compartido, haz clic en «Eliminar la clave API de este dispositivo» al terminar."
+  },
+  "verify": {
+    "valid": "Clave válida: ya puedes buscar.",
+    "invalidKey": "La clave API no es válida o se ha eliminado.",
+    "insufficient": "El saldo de la cuenta es demasiado bajo; recarga e inténtalo de nuevo.",
+    "httpError": "La API devolvió HTTP {status}; se desconoce el estado de la clave.",
+    "httpErrorWithMessage": "La API devolvió HTTP {status}: {message}. Se desconoce el estado de la clave.",
+    "network": "No se pudo enviar la solicitud (sin conexión, proxy o CORS). Aun así puedes intentar buscar.",
+    "enterKeyFirst": "Introduce primero una clave API.",
+    "failed": "La solicitud de verificación falló. Inténtalo más tarde."
+  },
+  "errors": {
+    "validation": {
+      "emptyQuery": "Introduce una consulta de búsqueda.",
+      "queryTooLong": "Las consultas están limitadas a 128 caracteres.",
+      "oriQuestionTooLong": "La pregunta original está limitada a 128 caracteres.",
+      "localization": "La IP de localización no es una dirección válida, p. ej. 203.0.113.10 o 2001:db8::1."
+    },
+    "contract": {
+      "missingResults": "La respuesta no tiene el campo results; puede que no provenga de la API Search.",
+      "resultsNotArray": "El campo results no es un array; puede que la respuesta no provenga de la API Search.",
+      "itemsMissingUrl": "Los elementos de results no tienen el campo url; puede que la API use nombres de campo distintos a los de la documentación.",
+      "title": "Formato de respuesta inesperado",
+      "hint": "Comprueba que el punto de conexión de la API apunte a un servicio compatible con DeepSeek Search, o haz que tu pasarela reenvíe el campo results sin cambios."
+    },
+    "status": {
+      "400": {
+        "title": "Solicitud no válida",
+        "hint": "Comprueba que la consulta tenga entre 1 y 128 caracteres y que la sintaxis siga la documentación."
+      },
+      "401": {
+        "title": "Clave API no válida",
+        "hint": "Vuelve a introducir la clave en los ajustes y confirma que pertenece a esta cuenta y no se ha eliminado."
+      },
+      "402": {
+        "title": "Saldo insuficiente",
+        "hint": "La búsqueda cuesta 5 CNY por cada 1000 solicitudes correctas. Recarga e inténtalo de nuevo."
+      },
+      "403": {
+        "title": "Solicitud rechazada",
+        "hint": "La política de seguridad de la API rechazó esta solicitud. Prueba otra consulta."
+      },
+      "404": {
+        "title": "No hay contenido disponible",
+        "hint": "El recurso de destino no está disponible. Ajusta la consulta y vuelve a intentarlo."
+      },
+      "408": {
+        "title": "Tiempo de espera agotado",
+        "hint": "Espera unos segundos y vuelve a intentarlo."
+      },
+      "413": {
+        "title": "Carga demasiado grande",
+        "hint": "Reduce la consulta y las opciones, y vuelve a intentarlo."
+      },
+      "429": {
+        "title": "Demasiadas solicitudes",
+        "hint": "La búsqueda permite 5 QPS por cuenta. Espera un momento y vuelve a buscar."
+      },
+      "500": {
+        "title": "Error interno del servidor",
+        "hint": "Vuelve a intentarlo en un momento; los fallos repetidos indican un problema del servidor."
+      },
+      "504": {
+        "title": "Tiempo de espera agotado aguas arriba",
+        "hint": "Vuelve a intentarlo en un momento."
+      }
+    },
+    "statusDetailMissing": "La API no incluyó una explicación detallada.",
+    "httpTitle": "Error en la solicitud (HTTP {status})",
+    "unexpectedStatusDetail": "La API devolvió un código de estado inesperado.",
+    "unknownStatusHint": "Vuelve a intentarlo en breve; si sigue fallando, cambia el punto de conexión de la API en los ajustes.",
+    "networkTitle": "No se puede acceder a la API de DeepSeek",
+    "networkHint": "Comprueba tu conexión. Si usas un proxy o un punto de conexión personalizado, debe permitir solicitudes de origen cruzado (CORS).",
+    "invalidInputTitle": "Las opciones no cumplen los requisitos de la API",
+    "invalidInputHint": "Corrígelas y vuelve a enviar.",
+    "missingKeyTitle": "No hay clave API configurada",
+    "missingKeyDetail": "La API Search usa autenticación Bearer, por lo que necesita tu propia clave API de DeepSeek.",
+    "missingKeyHint": "Añade la clave y busca; permanece en este navegador."
+  },
+  "localization": {
+    "modeAuto": "Automática",
+    "modeCustom": "Personalizada",
+    "customHelp": "Sesga los resultados hacia esta región; déjalo vacío para no indicarla.",
+    "autoHelp": "Tu IP pública se detecta al iniciar.",
+    "autoDetecting": "Detectando tu IP pública…",
+    "autoFailedKeep": "No se pudo detectar la IP; se mantiene la anterior.",
+    "autoFailedNone": "No se pudo detectar la IP; las búsquedas no incluirán una indicación de región."
+  }
+}

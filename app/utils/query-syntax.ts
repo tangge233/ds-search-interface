@@ -40,7 +40,7 @@ interface ValueSuggestion {
   descriptionParams?: Record<string, unknown>
 }
 
-/** 语言候选；中文名放在 `syntax.languages.*`，值本身是 lang: 的参数。 */
+/** 语言候选；语言名称放在 `syntax.languages.*`，值本身是 lang: 的参数。 */
 const LANGUAGES: ValueSuggestion[] = ['zh', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru'].map(value => ({
   value,
   descriptionKey: `syntax.languages.${value}`

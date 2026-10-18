@@ -14,7 +14,7 @@ const open = defineModel<boolean>('open', { required: true })
 const { t } = useI18n()
 const { apiKey, baseUrl, prefs, saveBaseUrl, clearApiKey, hasApiKey, resetPrefs } = useSearchSettings()
 const { clearAll: clearHistory } = useSearchHistory()
-const { countItems, sortItems, layoutItems, localizationModeItems } = usePresetItems()
+const { countItems, sortItems, layoutItems, localizationModeItems, localeModeItems } = usePresetItems()
 const { detecting, failed, setMode } = useLocalizationIp()
 const toast = useToast()
 
@@ -30,6 +30,9 @@ type SectionId = (typeof SECTIONS)[number]['id']
 
 /** 语言名称用各自的语言书写，不再翻译一遍。 */
 const localeItems = APP_LOCALES.map(item => ({ value: item.code, label: item.label }))
+const currentLocaleLabel = computed(
+  () => APP_LOCALES.find(item => item.code === prefs.locale)?.label ?? prefs.locale
+)
 
 /** 保留上次停留的分区，重复回来改同一项时少点一次。 */
 const section = ref<SectionId>('connection')
@@ -98,6 +101,11 @@ async function verify() {
 /** URadioGroup 的值类型是联合类型，收窄后交给 setMode，避免在模板里断言。 */
 function onModeChange(value: unknown) {
   if (value === 'auto' || value === 'custom') void setMode(value)
+}
+
+/** 语言来源同理：只在值合法时写回，自动模式的重选交给 composable 里的 watch。 */
+function onLocaleModeChange(value: unknown) {
+  if (value === 'auto' || value === 'manual') prefs.localeMode = value
 }
 
 function forgetKey() {
@@ -305,9 +313,29 @@ function onHistoryToggle(enabled: boolean) {
               <USelect v-model="prefs.resultsLayout" :items="layoutItems" class="w-full sm:w-56" />
             </UFormField>
 
-            <UFormField :label="t('settings.languageLabel')" :help="t('settings.languageHelp')">
+            <UFormField :label="t('settings.languageModeLabel')">
+              <URadioGroup
+                :model-value="prefs.localeMode"
+                :items="localeModeItems"
+                orientation="horizontal"
+                @update:model-value="onLocaleModeChange"
+              />
+            </UFormField>
+
+            <UFormField
+              v-if="prefs.localeMode === 'manual'"
+              :label="t('settings.languageLabel')"
+              :help="t('settings.languageHelp')"
+            >
               <USelect v-model="prefs.locale" :items="localeItems" class="w-full sm:w-56" />
             </UFormField>
+
+            <div v-else class="space-y-1">
+              <p class="text-sm text-toned">
+                {{ t('settings.languageAutoCurrent', { language: currentLocaleLabel }) }}
+              </p>
+              <p class="text-xs text-dimmed">{{ t('settings.languageAutoHelp') }}</p>
+            </div>
 
             <USwitch
               v-model="prefs.keepHistory"

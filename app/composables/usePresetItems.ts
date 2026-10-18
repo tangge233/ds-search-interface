@@ -1,4 +1,4 @@
-import { COUNT_OPTIONS, LAYOUT_OPTIONS, LOCALIZATION_MODE_OPTIONS, SORT_OPTIONS } from '~/utils/search-presets'
+import { COUNT_OPTIONS, LAYOUT_OPTIONS, LOCALE_MODE_OPTIONS, LOCALIZATION_MODE_OPTIONS, SORT_OPTIONS } from '~/utils/search-presets'
 
 /**
  * 参数选项的展示文案。
@@ -18,6 +18,9 @@ export function usePresetItems() {
   const localizationModeItems = computed(() =>
     LOCALIZATION_MODE_OPTIONS.map(option => ({ value: option.value, label: t(option.labelKey) }))
   )
+  const localeModeItems = computed(() =>
+    LOCALE_MODE_OPTIONS.map(option => ({ value: option.value, label: t(option.labelKey) }))
+  )
 
-  return { countItems, sortItems, layoutItems, localizationModeItems }
+  return { countItems, sortItems, layoutItems, localizationModeItems, localeModeItems }
 }

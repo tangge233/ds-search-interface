@@ -1,0 +1,311 @@
+{
+  "app": {
+    "name": "DeepSeek-Suchoberfläche"
+  },
+  "meta": {
+    "title": "DeepSeek-Suchoberfläche",
+    "description": "Eine reine Browser-Oberfläche für die DeepSeek Search API. Ihr API-Schlüssel verlässt diesen Browser nie."
+  },
+  "common": {
+    "retry": "Erneut versuchen",
+    "openSettings": "Einstellungen öffnen",
+    "backHome": "Zurück zum Start"
+  },
+  "header": {
+    "settings": "Einstellungen",
+    "settingsApiKey": "API-Schlüssel festlegen",
+    "customBaseUrl": "Benutzerdefinierter Endpunkt",
+    "help": "Nutzungshinweise",
+    "helpTitle": "Nutzungshinweise",
+    "helpDescription": "Bei Eingabe von site:, lang: oder after: erscheinen Vorschläge am Cursor: ↑↓ zum Auswählen, Tab zum Einfügen, Esc zum Schließen. Klicken Sie unten auf ein Beispiel, um damit zu suchen; mit / springen Sie ins Suchfeld."
+  },
+  "home": {
+    "description": "Live-Websuche mit Relevanz- und Autoritätsbewertung. Ihr API-Schlüssel bleibt in diesem Browser.",
+    "syntaxHint": "Unterstützt site:, lang:, after: und mehr – beim Fokussieren des Feldes erscheinen Vorschläge. Die vollständige Syntax steht unter „Nutzungshinweise“ oben rechts.",
+    "apiKeyAlertTitle": "DeepSeek-API-Schlüssel hinzufügen, um zu suchen",
+    "apiKeyAlertDescription": "Suchanfragen gehen vom Browser direkt an api.deepseek.com; der Schlüssel verlässt dieses Gerät nie.",
+    "goSettings": "Einstellungen öffnen",
+    "historyTitle": "Letzte Suchanfragen",
+    "historyClear": "Leeren"
+  },
+  "search": {
+    "placeholder": "Stichwörter oder Syntax site: lang: after:",
+    "submit": "Suchen",
+    "clear": "Suchbegriff löschen",
+    "completionHint": "↑↓ auswählen · Tab einfügen · Esc schließen",
+    "length": "{count} / 128 Zeichen",
+    "lengthOver": "{count} / 128 Zeichen – Limit überschritten, Suche nicht möglich",
+    "countLabel": "Anzeigen",
+    "countAria": "Anzahl der Ergebnisse",
+    "sortLabel": "Sortieren nach",
+    "sortAria": "Sortieren nach",
+    "needContent": "Volltext",
+    "needContentAria": "Seiteninhalt zurückgeben",
+    "onlyQuality": "Nur hochwertige",
+    "onlyQualityAria": "Nur Ergebnisse mit einer Bewertung von mindestens 1,5",
+    "advanced": "Abfrage-Generator",
+    "resetTooltip": "Gespeicherte Standardwerte wiederherstellen (die gespeicherten Werte bleiben unverändert)",
+    "resetAria": "Gespeicherte Standardwerte wiederherstellen",
+    "scopeHint": "Anzahl und „Volltext“ gelten für die nächste Suche; Sortierung und „Nur hochwertige“ gelten sofort. Änderungen hier bleiben bis zum Neuladen der Seite erhalten und werden nie in Ihren Einstellungen gespeichert."
+  },
+  "preset": {
+    "countOption": "{count} Ergebnisse",
+    "sort": {
+      "relevance": "Relevanz",
+      "authority": "Autorität zuerst",
+      "date": "Neueste zuerst"
+    },
+    "layout": {
+      "center": "Zentriert, eine Spalte",
+      "left": "Linksbündig, eine Spalte",
+      "columns": "Mehrere Spalten auf breiten Bildschirmen"
+    }
+  },
+  "advanced": {
+    "title": "Abfrage-Generator",
+    "parse": "Aus dem Suchfeld übernehmen",
+    "clearFields": "Felder leeren",
+    "previewLabel": "Erzeugte Abfrage",
+    "previewEmpty": "Noch keine Bedingungen",
+    "apply": "Anwenden und suchen",
+    "applyHint": "Ersetzt den Inhalt des Suchfelds und startet sofort die Suche.",
+    "keywords": "Alle Stichwörter",
+    "keywordsPlaceholder": "Durch Leerzeichen getrennt; Ergebnisse müssen alle enthalten",
+    "phrase": "Exakte Wortfolge",
+    "phrasePlaceholder": "Die gesamte Wortfolge muss übereinstimmen",
+    "excludeKeywords": "Stichwörter ausschließen",
+    "excludeKeywordsPlaceholder": "Werbung Sponsoring",
+    "excludePhrase": "Wortfolge ausschließen",
+    "excludePhrasePlaceholder": "release notes",
+    "site": "Auf Websites beschränken",
+    "siteHelp": "Mehrere Websites werden mit OR verbunden",
+    "sitePlaceholder": "github.com huggingface.co",
+    "excludeSite": "Websites ausschließen",
+    "excludeSitePlaceholder": "example.com",
+    "lang": "Sprache",
+    "langHelp": "Durch Kommas getrennt; erzeugt lang:zh,en",
+    "langPlaceholder": "de,en",
+    "after": "Veröffentlicht nach",
+    "afterHelp": "Erzeugt after:",
+    "afterPlaceholder": "2025 oder 2025-01-01",
+    "before": "Veröffentlicht vor",
+    "beforeHelp": "Erzeugt before:",
+    "beforePlaceholder": "2026",
+    "oriQuestion": "Ursprüngliche Frage",
+    "optional": "Optional",
+    "oriQuestionHelp": "Bis zu 128 Zeichen; hilft dem Server, Ihre Absicht zu verstehen",
+    "oriQuestionPlaceholder": "z. B. Wie stelle ich vLLM in der Produktion bereit?",
+    "localization": "Lokalisierungs-IP",
+    "localizationPlaceholder": "203.0.113.10"
+  },
+  "results": {
+    "loading": "Suche nach „{query}“…",
+    "summary": "„{query}“ ergab {count} Ergebnisse",
+    "hidden": ", davon {count} durch lokale Filter ausgeblendet",
+    "elapsed": "Dauer: {seconds} s",
+    "emptyTitle": "Keine Ergebnisse zum Anzeigen",
+    "emptyFiltered": "Nichts entspricht den aktuellen Filtern. Schalten Sie die lokale Filterung aus, um alles zu sehen.",
+    "emptySearch": "Versuchen Sie eine andere Formulierung oder entfernen Sie Einschränkungen wie site: / after:.",
+    "disableQualityFilter": "„Nur hochwertige“ ausschalten",
+    "footer": "Ergebnisse von der DeepSeek Search API. Diese Seite leitet Ihre Anfragen weder weiter noch speichert sie sie."
+  },
+  "result": {
+    "untitled": "(ohne Titel)",
+    "contentLabel": "Seiteninhalt (Markdown, bis zu 20.000 Zeichen)",
+    "copyContent": "Inhalt kopieren",
+    "contentCopied": "Seiteninhalt kopiert",
+    "scoreTooltip": "Relevanz 0–3; ab 1,5 hochwertig",
+    "score": "{score} Pkt.",
+    "authorityUnknown": "Autorität unbekannt",
+    "authority": "Autorität {level}/4",
+    "summary": "Lange Zusammenfassung ({count} Zeichen)",
+    "summaryOpen": "Zusammenfassung",
+    "summaryCopied": "Zusammenfassung kopiert",
+    "copyLink": "Link kopieren",
+    "linkCopied": "Link kopiert",
+    "open": "Öffnen",
+    "showContent": "Inhalt",
+    "hideContent": "Inhalt ausblenden",
+    "copyFailed": "Kopieren fehlgeschlagen",
+    "copyFailedDescription": "Der Browser hat den Zugriff auf die Zwischenablage verweigert. Markieren Sie den Text und kopieren Sie ihn manuell.",
+    "copySummary": "Zusammenfassung kopieren"
+  },
+  "syntax": {
+    "listTitle": "Unterstützte Suchsyntax",
+    "site": "Ergebnisse auf diese Websites beschränken; mehrere mit OR kombinieren",
+    "excludeSite": "Diese Websites ausschließen",
+    "phrase": "Genau diese Wortfolge treffen",
+    "excludeKeyword": "Seiten mit diesem Stichwort ausschließen",
+    "excludePhrase": "Seiten mit dieser Wortfolge ausschließen",
+    "lang": "Sprache einschränken; mehrere durch Kommas trennen",
+    "after": "Nur Seiten, die nach diesem Datum veröffentlicht wurden",
+    "before": "Nur Seiten, die vor diesem Datum veröffentlicht wurden",
+    "completion": {
+      "lang": "Sprache einschränken, z. B. lang:zh,en",
+      "afterYear": "Nach {year}",
+      "beforeYear": "Vor {year}"
+    },
+    "languages": {
+      "zh": "Chinesisch",
+      "en": "Englisch",
+      "ja": "Japanisch",
+      "ko": "Koreanisch",
+      "fr": "Französisch",
+      "de": "Deutsch",
+      "es": "Spanisch",
+      "ru": "Russisch"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "description": "Nur auf diesem Gerät gespeichert; Änderungen außerhalb von „Verbindung“ werden automatisch gespeichert.",
+    "sectionConnection": "Verbindung",
+    "sectionDefaults": "Suchstandards",
+    "sectionInterface": "Oberfläche und Verlauf",
+    "sectionAbout": "Über",
+    "connectionDescription": "API-Schlüssel und Endpunkt. Diese werden erst nach Klick auf „Verbindung speichern“ wirksam.",
+    "apiKeyLabel": "API-Schlüssel",
+    "apiKeyHelp": "Erstellen Sie einen unter API Keys auf platform.deepseek.com; er sieht aus wie sk-…",
+    "showKey": "API-Schlüssel anzeigen",
+    "hideKey": "API-Schlüssel verbergen",
+    "saveConnection": "Verbindung speichern",
+    "savedTitle": "Verbindung gespeichert",
+    "savedDescription": "Der API-Schlüssel wird nur im localStorage dieses Geräts gespeichert.",
+    "verify": "Schlüssel prüfen",
+    "clearKey": "API-Schlüssel von diesem Gerät entfernen",
+    "keyCleared": "API-Schlüssel von diesem Gerät entfernt",
+    "baseUrlLabel": "API-Endpunkt",
+    "advancedHint": "Normalerweise unverändert",
+    "baseUrlHelp": "Standardmäßig der offizielle Endpunkt; ersetzen Sie ihn, wenn Sie ein selbst gehostetes Gateway verwenden.",
+    "checkValidTitle": "Schlüssel ist gültig",
+    "checkInvalidTitle": "Schlüssel ist nicht verwendbar",
+    "checkUnknownTitle": "Schlüssel konnte nicht bestätigt werden",
+    "defaultsDescription": "Diese Werte gelten als Standard für neue Suchen; Anpassungen in der Ergebnisleiste gelten nur für diese Sitzung und werden nie hierher zurückgeschrieben.",
+    "resetDefaults": "Auf integrierte Standardwerte zurücksetzen",
+    "countLabel": "Ergebnisse pro Suche",
+    "countHelp": "1–50; betrifft nur die Anzahl zurückgegebener Ergebnisse, nicht die Abrechnung",
+    "sortLabel": "Sortierreihenfolge",
+    "sortHelp": "Lokal sortiert, ohne Zusatzkosten; „Relevanz“ behält die API-Reihenfolge bei",
+    "localizationLabel": "Lokalisierungs-IP",
+    "needContentLabel": "Seiteninhalt zurückgeben",
+    "needContentDescription": "Gibt die vollständige Seite zurück, die Sie inline aufklappen und lesen können.",
+    "onlyQualityLabel": "Nur hochwertige Ergebnisse",
+    "onlyQualityDescription": "Blendet Ergebnisse mit einer Bewertung unter 1,5 aus.",
+    "interfaceDescription": "Ergebnislayout, Oberflächensprache und Suchverlauf.",
+    "layoutLabel": "Ergebnislayout",
+    "layoutHelp": "Zwei Spalten ab 1024 px.",
+    "languageLabel": "Oberflächensprache",
+    "languageHelp": "Wird sofort angewendet.",
+    "languageModeLabel": "Sprachquelle",
+    "languageModeAuto": "Automatisch (Browser)",
+    "languageModeManual": "Manuell wählen",
+    "languageAutoCurrent": "Aktuelle Sprache: {language}",
+    "languageAutoHelp": "Folgt der Sprachpräferenz Ihres Browsers und wechselt, wenn sie sich ändert.",
+    "keepHistoryLabel": "Suchverlauf aufbewahren",
+    "keepHistoryDescription": "Beim Ausschalten wird die Aufzeichnung beendet und der vorhandene Verlauf gelöscht.",
+    "aboutIntro": "Eine reine Browser-Oberfläche, erstellt mit Vue 3, Nuxt 4 und Nuxt UI.",
+    "aboutApiDocs": "Dokumentation der DeepSeek Search API",
+    "licenseText": "MIT-Lizenz: freie Nutzung, Änderung und Weitergabe, auch kommerziell, solange der Copyright-Hinweis und der vollständige Lizenztext erhalten bleiben.",
+    "githubRepo": "GitHub-Repository",
+    "licenseLink": "Vollständiger MIT-Lizenztext",
+    "billingTitle": "Abrechnung",
+    "billingText": "5 CNY pro 1.000 erfolgreiche Anfragen; abgerechnet werden nur Anfragen, die Ergebnisse liefern. „Schlüssel prüfen“ löst keine Suche aus und wird nicht berechnet.",
+    "billingLink": "DeepSeek-Preisinformationen",
+    "rateTitle": "Ratenlimits",
+    "rateText": "5 QPS pro Konto; bei Erreichen des Limits werden Sie gebeten, es kurz darauf erneut zu versuchen.",
+    "rateLink": "offizielle API-Anleitung",
+    "dataTitle": "Wohin Daten gehen",
+    "dataText": "Kein eigener Backend-Server: Außer dem Senden Ihres API-Schlüssels und Ihrer Anfrage an den konfigurierten Endpunkt werden keine Daten an andere Server gesendet oder dort gespeichert. Die Option „Automatisch“ sendet eine separate Anfrage an myip.ipip.net, die weder Ihren Schlüssel noch Ihre Anfrage enthält.",
+    "dutyTitle": "Ihre Verantwortung",
+    "dutyText": "Sie sind für den Schutz Ihres API-Schlüssels, die Kosten Ihres Kontos und die Verwendung der Ergebnisse verantwortlich. Befolgen Sie die Nutzungsbedingungen von DeepSeek und beurteilen Sie selbst, ob die Ergebnisse zu Ihrem Anwendungsfall passen.",
+    "storageTitle": "Lokaler Speicher",
+    "storageText": "Der API-Schlüssel wird im Klartext im localStorage gespeichert und ist für jedes Skript derselben Herkunft lesbar. Klicken Sie auf einem gemeinsam genutzten Computer abschließend auf „API-Schlüssel von diesem Gerät entfernen“."
+  },
+  "verify": {
+    "valid": "Schlüssel ist gültig – Sie können jetzt suchen.",
+    "invalidKey": "Der API-Schlüssel ist ungültig oder wurde gelöscht.",
+    "insufficient": "Das Kontoguthaben ist zu niedrig; laden Sie auf und versuchen Sie es erneut.",
+    "httpError": "Die API hat HTTP {status} zurückgegeben; der Status des Schlüssels ist unbekannt.",
+    "httpErrorWithMessage": "Die API hat HTTP {status} zurückgegeben: {message}. Der Status des Schlüssels ist unbekannt.",
+    "network": "Die Anfrage konnte nicht gesendet werden (offline, Proxy oder CORS). Sie können trotzdem versuchen zu suchen.",
+    "enterKeyFirst": "Geben Sie zuerst einen API-Schlüssel ein.",
+    "failed": "Die Prüfanfrage ist fehlgeschlagen. Versuchen Sie es später erneut."
+  },
+  "errors": {
+    "validation": {
+      "emptyQuery": "Geben Sie einen Suchbegriff ein.",
+      "queryTooLong": "Suchanfragen sind auf 128 Zeichen begrenzt.",
+      "oriQuestionTooLong": "Die ursprüngliche Frage ist auf 128 Zeichen begrenzt.",
+      "localization": "Die Lokalisierungs-IP ist keine gültige Adresse, z. B. 203.0.113.10 oder 2001:db8::1."
+    },
+    "contract": {
+      "missingResults": "Die Antwort enthält kein Feld results – sie stammt möglicherweise nicht von der Search API.",
+      "resultsNotArray": "Das Feld results ist kein Array – die Antwort stammt möglicherweise nicht von der Search API.",
+      "itemsMissingUrl": "Einträge in results haben kein Feld url; die API verwendet möglicherweise andere Feldnamen als die Dokumentation.",
+      "title": "Unerwartetes Antwortformat",
+      "hint": "Prüfen Sie, ob der API-Endpunkt auf einen DeepSeek Search-kompatiblen Dienst zeigt, oder lassen Sie Ihr Gateway das Feld results unverändert weiterleiten."
+    },
+    "status": {
+      "400": {
+        "title": "Ungültige Anfrage",
+        "hint": "Prüfen Sie, ob die Anfrage 1–128 Zeichen lang ist und die Syntax der Dokumentation entspricht."
+      },
+      "401": {
+        "title": "Ungültiger API-Schlüssel",
+        "hint": "Geben Sie den Schlüssel in den Einstellungen erneut ein und stellen Sie sicher, dass er zu diesem Konto gehört und nicht gelöscht wurde."
+      },
+      "402": {
+        "title": "Guthaben nicht ausreichend",
+        "hint": "Die Suche kostet 5 CNY pro 1.000 erfolgreiche Anfragen. Laden Sie auf und versuchen Sie es erneut."
+      },
+      "403": {
+        "title": "Anfrage abgelehnt",
+        "hint": "Die Sicherheitsrichtlinie der API hat diese Anfrage abgelehnt. Versuchen Sie einen anderen Suchbegriff."
+      },
+      "404": {
+        "title": "Kein Inhalt verfügbar",
+        "hint": "Die Zielressource ist nicht verfügbar. Passen Sie die Anfrage an und versuchen Sie es erneut."
+      },
+      "408": {
+        "title": "Zeitüberschreitung der Anfrage",
+        "hint": "Warten Sie einige Sekunden und versuchen Sie es erneut."
+      },
+      "413": {
+        "title": "Anfrage zu groß",
+        "hint": "Kürzen Sie Anfrage und Optionen und versuchen Sie es erneut."
+      },
+      "429": {
+        "title": "Zu viele Anfragen",
+        "hint": "Die Suche erlaubt 5 QPS pro Konto. Warten Sie einen Moment und suchen Sie erneut."
+      },
+      "500": {
+        "title": "Interner Serverfehler",
+        "hint": "Versuchen Sie es gleich erneut; wiederholte Fehler deuten auf ein serverseitiges Problem hin."
+      },
+      "504": {
+        "title": "Zeitüberschreitung vorgelagert",
+        "hint": "Versuchen Sie es gleich erneut."
+      }
+    },
+    "statusDetailMissing": "Die API hat keine ausführliche Erklärung geliefert.",
+    "httpTitle": "Anfrage fehlgeschlagen (HTTP {status})",
+    "unexpectedStatusDetail": "Die API hat einen unerwarteten Statuscode zurückgegeben.",
+    "unknownStatusHint": "Versuchen Sie es bald erneut; bei wiederholtem Fehlschlag ändern Sie den API-Endpunkt in den Einstellungen.",
+    "networkTitle": "DeepSeek-API nicht erreichbar",
+    "networkHint": "Prüfen Sie Ihre Verbindung. Bei einem Proxy oder benutzerdefinierten Endpunkt muss dieser Cross-Origin-Anfragen (CORS) erlauben.",
+    "invalidInputTitle": "Optionen erfüllen nicht die Anforderungen der API",
+    "invalidInputHint": "Korrigieren Sie sie und senden Sie erneut.",
+    "missingKeyTitle": "Kein API-Schlüssel konfiguriert",
+    "missingKeyDetail": "Die Search API verwendet Bearer-Authentifizierung und benötigt daher Ihren eigenen DeepSeek-API-Schlüssel.",
+    "missingKeyHint": "Fügen Sie den Schlüssel hinzu und suchen Sie; er bleibt in diesem Browser."
+  },
+  "localization": {
+    "modeAuto": "Automatisch",
+    "modeCustom": "Benutzerdefiniert",
+    "customHelp": "Gewichtet Ergebnisse in Richtung dieser Region; leer lassen, um nichts anzugeben.",
+    "autoHelp": "Ihre öffentliche IP wird beim Start ermittelt.",
+    "autoDetecting": "Öffentliche IP wird ermittelt…",
+    "autoFailedKeep": "IP konnte nicht ermittelt werden; der vorherige Wert bleibt erhalten.",
+    "autoFailedNone": "IP konnte nicht ermittelt werden; die Suche enthält keinen Regionshinweis."
+  }
+}
